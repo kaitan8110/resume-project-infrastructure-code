@@ -1,7 +1,12 @@
 secrets/
-setup-jenkins-in-ec2-aws/terraform/.terraform/*
-provision-infrastructure-using-jenkins/terraform/.terraform/*
-setup-jenkins-in-ec2-aws/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.58.0/darwin_arm64/terraform-provider-aws_v5.58.0_x5
+
+# Ignore Terraform provider binaries
+setup-jenkins-in-ec2-aws/terraform/.terraform/
+setup-jenkins-in-ec2-aws/terraform/terraform.tfstate
+setup-jenkins-in-ec2-aws/terraform/terraform.tfstate.backup
+provision-infrastructure-using-jenkins/terraform/.terraform/
+provision-infrastructure-using-jenkins/terraform/terraform.tfstate
+provision-infrastructure-using-jenkins/terraform/terraform.tfstate.backup
 
 *.pem
 *.key
