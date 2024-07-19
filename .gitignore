@@ -1,1 +1,3 @@
 secrets/
+setup-jenkins-in-ec2-aws/terraform/.terraform
+provision-infrastructure-using-jenkins/terraform/.terraform
