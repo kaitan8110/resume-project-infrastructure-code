@@ -1,0 +1,27 @@
+---
+- hosts: jenkins
+  become: true
+  tasks:
+    - name: Install Amazon Corretto 11
+      yum:
+        name: java-11-amazon-corretto
+        state: present
+
+    - name: Add Jenkins repo
+      yum_repository:
+        name: jenkins
+        description: Jenkins
+        baseurl: http://pkg.jenkins.io/redhat-stable/
+        gpgcheck: yes
+        gpgkey: http://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+
+    - name: Start Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
