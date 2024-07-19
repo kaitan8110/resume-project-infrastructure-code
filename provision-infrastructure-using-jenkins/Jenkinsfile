@@ -27,35 +27,6 @@ pipeline {
             }
         }
 
-        stage("Deploy Ansible Infra") {
-            when {
-                allOf {
-                    environment name: 'TERRADESTROY', value: 'N'
-                    environment name: 'SKIP', value: 'N'
-                }
-            }
-            stages {
-                stage('Validate Ansible Infra') {
-                    steps {
-                        sh '''
-                        cd ansible_infra
-                        terraform init
-                        terraform validate
-                        '''
-                    }
-                }
-                stage('Deploy Ansible Infra') {
-                    steps {
-                        sh '''
-                        cd ansible_infra
-                        terraform plan -out outfile
-                        terraform apply outfile
-                        '''
-                    }
-                }
-            }
-        }
-
         // Additional stages as defined in your original Jenkinsfile
         // Ensure that each stage follows the correct indentation and syntax
 
