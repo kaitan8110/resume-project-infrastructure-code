@@ -1,38 +1,69 @@
-pipeline{
-
+pipeline {
     agent any
-    environment{
-        AWS_ACCESS_KEY_ID=credentials('aws-access-key')
-        AWS_SECRET_ACCESS_KEY=credentials('aws-secret-access-key')
-        AWS_DEFAULT_REGION="ap-southeast-1"
-        SKIP="N"
-        TERRADESTROY="N"
-        FIRST_DEPLOY="Y"
-        STATE_BUCKET="terraform-state-bucket"
-        ANSIBLE_BUCKET_NAME="ansible-state-bucket>"
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_DEFAULT_REGION = "ap-southeast-1"
+        SKIP = "N"
+        TERRADESTROY = "N"
+        FIRST_DEPLOY = "Y"
+        STATE_BUCKET = "terraform-state-bucket"
+        ANSIBLE_BUCKET_NAME = "ansible-state-bucket"
     }
 
-    stages{
-        stage("Create Terraform State Buckets"){
-            when{
-                environment name:'FIRST_DEPLOY',value:'Y'
-                environment name:'TERRADESTROY',value:'N'
-                environment name:'SKIP',value:'N'
+    stages {
+        stage("Create Terraform State Buckets") {
+            when {
+                allOf {
+                    environment name: 'FIRST_DEPLOY', value: 'Y'
+                    environment name: 'TERRADESTROY', value: 'N'
+                    environment name: 'SKIP', value: 'N'
+                }
             }
-            steps{
-                sh'''
-                aws s3 mb s3://terraform-state-bucket'''
-                
+            steps {
+                sh '''
+                aws s3 mb s3://terraform-state-bucket
+                '''
             }
         }
-        //new stage from here
+
+        stage("Deploy Ansible Infra") {
+            when {
+                allOf {
+                    environment name: 'TERRADESTROY', value: 'N'
+                    environment name: 'SKIP', value: 'N'
+                }
+            }
+            stages {
+                stage('Validate Ansible Infra') {
+                    steps {
+                        sh '''
+                        cd ansible_infra
+                        terraform init
+                        terraform validate
+                        '''
+                    }
+                }
+                stage('Deploy Ansible Infra') {
+                    steps {
+                        sh '''
+                        cd ansible_infra
+                        terraform plan -out outfile
+                        terraform apply outfile
+                        '''
+                    }
+                }
+            }
+        }
+
+        // Additional stages as defined in your original Jenkinsfile
+        // Ensure that each stage follows the correct indentation and syntax
 
     }
 
-    post { 
-        always { 
+    post {
+        always {
             cleanWs()
         }
     }
-
 }
