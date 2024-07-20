@@ -1,40 +1,33 @@
 pipeline {
-    agent any
-    environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
-        AWS_DEFAULT_REGION = "ap-southeast-1"
-        SKIP = "N"
-        TERRADESTROY = "N"
-        FIRST_DEPLOY = "Y"
-        STATE_BUCKET = "terraform-state-bucket"
-        ANSIBLE_BUCKET_NAME = "ansible-state-bucket"
-    }
-
-    stages {
-        stage("Create Terraform State Buckets") {
-            when {
-                allOf {
-                    environment name: 'FIRST_DEPLOY', value: 'Y'
-                    environment name: 'TERRADESTROY', value: 'N'
-                    environment name: 'SKIP', value: 'N'
-                }
+    agent { 
+        node {
+            label 'jenkins-agent-goes-here'
             }
+      }
+    stages {
+        stage('Build') {
             steps {
+                echo "Building.."
                 sh '''
-                aws s3 mb s3://terraform-state-bucket
+                echo "doing build stuff.."
                 '''
             }
         }
-
-        // Additional stages as defined in your original Jenkinsfile
-        // Ensure that each stage follows the correct indentation and syntax
-
-    }
-
-    post {
-        always {
-            cleanWs()
+        stage('Test') {
+            steps {
+                echo "Testing.."
+                sh '''
+                echo "doing test stuff..
+                '''
+            }
+        }
+        stage('Deliver') {
+            steps {
+                echo 'Deliver....'
+                sh '''
+                echo "doing delivery stuff.."
+                '''
+            }
         }
     }
 }
