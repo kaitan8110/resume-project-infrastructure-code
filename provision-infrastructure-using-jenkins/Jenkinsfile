@@ -7,8 +7,8 @@ pipeline {
         SKIP = "N"
         TERRADESTROY = "N"
         FIRST_DEPLOY = "Y"
-        STATE_BUCKET = "terraform-state-bucket"
-        ANSIBLE_BUCKET_NAME = "ansible-state-bucket"
+        STATE_BUCKET = "terraform-state-bucket-unique123456"  // Ensure this name is unique
+        ANSIBLE_BUCKET_NAME = "ansible-state-bucket-unique123456"  // Ensure this name is unique
     }
 
     stages {
@@ -21,9 +21,18 @@ pipeline {
                 }
             }
             steps {
-                sh '''
-                aws s3 mb s3://terraform-state-bucket
-                '''
+                script {
+                    def bucketExists = sh(
+                        script: "aws s3 ls s3://${STATE_BUCKET}",
+                        returnStatus: true
+                    ) == 0
+
+                    if (!bucketExists) {
+                        sh "aws s3 mb s3://${STATE_BUCKET}"
+                    } else {
+                        echo "Bucket ${STATE_BUCKET} already exists, skipping creation."
+                    }
+                }
             }
         }
 
