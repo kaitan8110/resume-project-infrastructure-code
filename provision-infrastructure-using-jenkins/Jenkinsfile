@@ -47,7 +47,7 @@ pipeline {
                 stage('Validate Ansible Infra') {
                     steps {
                         sh '''
-                        cd terraform/s3-bucket
+                        cd provision-infrastructure-using-jenkins/terraform/s3-bucket
                         terraform init
                         terraform validate
                         '''
@@ -56,7 +56,7 @@ pipeline {
                 stage('Deploy Ansible Infra') {
                     steps {
                         sh '''
-                        cd terraform/s3-bucket
+                        cd provision-infrastructure-using-jenkins/terraform/s3-bucket
                         terraform plan -out outfile
                         terraform apply outfile
                         '''
