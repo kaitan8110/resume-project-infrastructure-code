@@ -159,6 +159,7 @@
   },
   "active": "47226a4c9fd494cd",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/terraform/s3-bucket/variables.tf",
     "provision-infrastructure-using-jenkins/Jenkinsfile",
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/main.tf",
@@ -169,7 +170,6 @@
     "provision-infrastructure-using-jenkins/terraform/node_asg/node_asg.tf",
     "provision-infrastructure-using-jenkins/terraform/networking/networking.tf",
     "provision-infrastructure-using-jenkins/terraform/kube-control-plane/kube-control-plane.tf",
-    "provision-infrastructure-using-jenkins/terraform/kube-control-plane",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
