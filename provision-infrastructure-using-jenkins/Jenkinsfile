@@ -48,7 +48,7 @@ pipeline {
                     steps {
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/s3-bucket
-                        terraform init
+                        terraform init -backend-config="key=terraform-state-ansible"
                         terraform validate
                         '''
                     }
@@ -57,7 +57,7 @@ pipeline {
                     steps {
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/s3-bucket
-                        terraform plan -out outfile
+                        terraform plan -out outfile -backend-config="key=terraform-state-ansible"
                         terraform apply outfile
                         '''
                     }
@@ -77,7 +77,7 @@ pipeline {
                     steps {
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/networking
-                        terraform init
+                        terraform init -backend-config="key=terraform-state-networking
                         terraform validate
                         '''
                     }
@@ -86,7 +86,7 @@ pipeline {
                     steps{
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/networking
-                        terraform plan -out outfile
+                        terraform plan -out outfile -backend-config="key=terraform-state-networking
                         terraform apply outfile
                         '''
                     }

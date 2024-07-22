@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "terraform-state-bucket-unique123456"
-    key    = "terraform-state"
+    key    = "terraform-state-controlplane"
     region = "ap-southeast-1"
   }
 }
