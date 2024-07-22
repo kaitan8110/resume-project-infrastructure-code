@@ -1,0 +1,1 @@
+ansible_bucket = "ansible-bucket-unique12345678"

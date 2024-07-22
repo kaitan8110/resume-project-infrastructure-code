@@ -170,6 +170,7 @@
   },
   "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/terraform/s3-bucket/terraform.tfvars",
     "provision-infrastructure-using-jenkins/terraform/networking/terraform.tfvars",
     "provision-infrastructure-using-jenkins/terraform/networking/variables.tf",
     "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
@@ -182,7 +183,6 @@
     "provision-infrastructure-using-jenkins/terraform/node_asg/main.tf",
     "provision-infrastructure-using-jenkins/terraform/networking/main.tf",
     "provision-infrastructure-using-jenkins/terraform/kube-control-plane/main.tf",
-    "provision-infrastructure-using-jenkins/terraform/s3-bucket/s3-bucket.tf",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
