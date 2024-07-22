@@ -111,7 +111,7 @@ pipeline {
                         stage('Validate inst Infra'){
                             steps{
                                 sh '''
-                                cd instances
+                                cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
                                 terraform init
                                 terraform validate
                                 '''
@@ -120,7 +120,7 @@ pipeline {
                         stage('Deploy inst Infra'){
                             steps{
                                 sh '''
-                                cd instances
+                                cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
                                 terraform plan -out outfile
                                 terraform apply outfile
                                 '''
