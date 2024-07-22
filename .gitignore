@@ -21,3 +21,4 @@ provision-infrastructure-using-jenkins/terraform/terraform.tfstate.backup
 *.zip
 *.jks
 *.keystore
+.obsidian/*

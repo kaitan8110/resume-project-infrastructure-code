@@ -25,3 +25,32 @@
         name: jenkins
         state: started
         enabled: yes
+
+    - name: Install yum-utils
+      yum:
+        name: yum-utils
+        state: present
+
+    - name: Add HashiCorp GPG key
+      rpm_key:
+        state: present
+        key: https://rpm.releases.hashicorp.com/gpg
+
+    - name: Add HashiCorp repository for Amazon Linux 2
+      yum_repository:
+        name: hashicorp
+        description: HashiCorp Stable - $basearch
+        baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/2/x86_64/stable
+        gpgcheck: yes
+        gpgkey: https://rpm.releases.hashicorp.com/gpg
+        enabled: yes
+
+    - name: Update yum repository metadata
+      command: yum makecache
+
+    - name: Install Terraform
+      yum:
+        name: terraform
+        state: present
+      register: terraform_install_result
+      failed_when: "'No package terraform available.' in terraform_install_result.msg"

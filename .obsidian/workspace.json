@@ -28,9 +28,19 @@
                 "currentVersion": "1.6.7"
               }
             }
+          },
+          {
+            "id": "66aab5911511322f",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md"
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -80,7 +90,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "9370c5a12195f90a",
@@ -96,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md"
               }
             }
           }
@@ -154,11 +164,17 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "47226a4c9fd494cd",
+  "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/terraform/networking/terraform.tfvars",
+    "provision-infrastructure-using-jenkins/terraform/networking/variables.tf",
+    "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
+    "Excalidraw",
+    "Untitled.canvas",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/variables.tf",
     "provision-infrastructure-using-jenkins/Jenkinsfile",
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
@@ -167,9 +183,6 @@
     "provision-infrastructure-using-jenkins/terraform/networking/main.tf",
     "provision-infrastructure-using-jenkins/terraform/kube-control-plane/main.tf",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/s3-bucket.tf",
-    "provision-infrastructure-using-jenkins/terraform/node_asg/node_asg.tf",
-    "provision-infrastructure-using-jenkins/terraform/networking/networking.tf",
-    "provision-infrastructure-using-jenkins/terraform/kube-control-plane/kube-control-plane.tf",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",

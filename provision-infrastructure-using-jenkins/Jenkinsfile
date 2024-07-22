@@ -65,6 +65,36 @@ pipeline {
             }
         }
 
+        stage("Deploy Networking"){
+            when {
+                allOf {
+                    environment name:'TERRADESTROY',value:'N'
+                    environment name:'SKIP',value:'N'
+                }
+            }
+            stages {
+                stage('Validate n/w Infra'){
+                    steps {
+                        sh '''
+                        cd provision-infrastructure-using-jenkins/terraform/networking
+                        terraform init
+                        terraform validate
+                        '''
+                    }
+                }
+                stage('Deploy n/w Infra'){
+                    steps{
+                        sh '''
+                        cd provision-infrastructure-using-jenkins/terraform/networking
+                        terraform plan -out outfile
+                        terraform apply outfile
+                        '''
+                    }
+                }
+            }
+
+        }
+
         // Additional stages as defined in your original Jenkinsfile
         // Ensure that each stage follows the correct indentation and syntax
 
