@@ -1,0 +1,71 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 3.74.1"
+    }
+  }
+
+  backend "s3" {
+    bucket = "terraform-state-bucket-unique123456"
+    key    = "terraform-state"
+    region = "ap-southeast-1"
+  }
+}
+
+provider "aws" {
+  region = "ap-southeast-1"
+}
+
+data "aws_subnet" "controlplane_subnet_id" {
+  
+  filter {
+    name   = "tag:Name"
+    values = ["controlplane_subnet"]
+  }
+
+#   most_recent = true
+}
+
+data "aws_security_group" "kube_sg_id" {
+  
+  filter {
+    name   = "tag:Name"
+    values = ["kube_sg"]
+  }
+
+#   most_recent = true
+}
+
+data "aws_key_pair" "key_pair_id" {
+  
+  filter {
+    name   = "tag:Name"
+    values = ["DeployerKeyPair"]
+  }
+
+#   most_recent = true
+}
+
+resource "aws_network_interface" "controlplane_eni" {
+  subnet_id       = data.aws_subnet.controlplane_subnet_id.id
+  security_groups = [data.aws_security_group.kube_sg_id.id]
+
+}
+
+resource "aws_instance" "controlplane" {
+  ami           = "ami-0e97ea97a2f374e3d" # us-east-1
+  instance_type = "t2.micro"
+
+  network_interface {
+    network_interface_id = resource.aws_network_interface.controlplane_eni.id
+    device_index         = 0
+  }
+  availability_zone = "ap-southeast-1b"
+  key_name = data.aws_key_pair.key_pair_id.key_name
+
+  tags= {
+    Name = "KubeCtrlPlane"
+  }
+
+}

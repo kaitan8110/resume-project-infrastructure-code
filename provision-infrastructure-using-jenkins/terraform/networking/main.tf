@@ -74,3 +74,49 @@ resource "aws_route_table_association" "worker_rta" {
   subnet_id      = aws_subnet.worker_subnet.id
   route_table_id = aws_route_table.worker_rt.id
 }
+
+resource "aws_security_group" "kube_sg" {
+  name        = "kube_sg"
+  description = "sg for kube"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol   = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port  = 22
+    to_port    = 22
+  }
+
+  ingress {
+    protocol   = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port  = 80
+    to_port    = 80
+  }
+
+  ingress {
+    protocol   = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port  = 443
+    to_port    = 443
+  }
+
+  ingress {
+    protocol   = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port  = 6443
+    to_port    = 6443
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "kube_sg"
+  }
+}
