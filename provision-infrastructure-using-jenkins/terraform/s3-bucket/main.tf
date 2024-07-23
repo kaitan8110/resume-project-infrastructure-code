@@ -39,7 +39,7 @@ resource "aws_s3_bucket" "ansible_bucket" {
   bucket = var.ansible_bucket
 
   tags = {
-    Name        = "My ansible bucket"
+    Name        = "AnsibleBucket"
     Environment = "Dev"
   }
 
