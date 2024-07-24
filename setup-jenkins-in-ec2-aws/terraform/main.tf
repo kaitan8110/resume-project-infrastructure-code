@@ -32,6 +32,16 @@ resource "aws_route_table" "main_rt" {
   vpc_id = aws_vpc.main_vpc.id
 
   route {
+    cidr_block = "10.0.2.0/24"  # controlplane_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
+
+  route {
+    cidr_block = "10.0.3.0/24"  # worker_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
+
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main_igw.id
   }

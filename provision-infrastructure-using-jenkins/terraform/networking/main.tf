@@ -42,6 +42,16 @@ resource "aws_route_table" "controlplane_rt" {
   vpc_id = var.vpc_id
 
   route {
+    cidr_block = "10.0.1.0/24"  # jenkins_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
+
+  route {
+    cidr_block = "10.0.3.0/24"  # worker_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
+
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = var.igw_id
   }
@@ -53,6 +63,16 @@ resource "aws_route_table" "controlplane_rt" {
 
 resource "aws_route_table" "worker_rt" {
   vpc_id = var.vpc_id
+
+  route {
+    cidr_block = "10.0.1.0/24"  # jenkins_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
+
+  route {
+    cidr_block = "10.0.2.0/24"  # controlplane_subnet
+    gateway_id = "local"  # Use local routing within VPC
+  }
 
   route {
     cidr_block = "0.0.0.0/0"
