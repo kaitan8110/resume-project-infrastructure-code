@@ -70,3 +70,10 @@
         ansible-galaxy collection install amazon.aws
       environment:
         PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/jenkins/.local/bin:/home/jenkins/bin"
+
+    - name: Ensure jenkins user can sudo without password
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
