@@ -2,6 +2,8 @@
   gather_facts: yes
   become: true
   connection: local
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.9
   tasks:
     - name: get ec2
       amazon.aws.ec2_instance_info:
