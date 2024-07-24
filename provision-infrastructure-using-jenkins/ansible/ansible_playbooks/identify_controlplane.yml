@@ -4,7 +4,7 @@
   connection: local
   tasks:
     - name: get ec2
-      amazon.aws.ec2_instance_facts:
+      amazon.aws.ec2_instance_info:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
         ec2_region: "ap-southeast-1"
