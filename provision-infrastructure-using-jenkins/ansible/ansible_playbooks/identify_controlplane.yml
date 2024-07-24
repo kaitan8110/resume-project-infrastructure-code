@@ -7,7 +7,7 @@
       ec2_instance_facts:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        ec2_region: "us-east-1"
+        ec2_region: "ap-southeast-1"
         filters:
           tag:Name: KubeCtrlPlane
       register: ec2_facts
@@ -25,11 +25,11 @@
     - name: add ansible user line
       lineinfile:
         path: ./inv
-        line: "ansible_user=ubuntu"
+        line: "ansible_user=ec2-user"
     - name: add ansible key line
       lineinfile:
         path: ./inv
-        line: "ansible_ssh_private_key_file=/var/lib/jenkins/id_rsa"
+        line: "ansible_ssh_private_key_file={{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
     - name: add ssh args line
       lineinfile:
         path: ./inv
@@ -38,7 +38,7 @@
       aws_s3:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        ec2_region: "us-east-1"
+        ec2_region: "ap-southeast-1"
         bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
         mode: put
         object: /inv

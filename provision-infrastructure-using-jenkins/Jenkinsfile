@@ -9,6 +9,7 @@ pipeline {
         FIRST_DEPLOY = "Y"
         STATE_BUCKET = "terraform-state-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_BUCKET_NAME = "ansible-state-bucket-unique123456"  // Ensure this name is unique
+        ANSIBLE_SSH_PRIVATE_KEY = credentials('ansible-ssh-key')
     }
 
     stages {
@@ -126,57 +127,26 @@ pipeline {
                                 '''
                             }
                         }
-                        // stage('Prepare inv file'){
-                        //     when {
-                        //         environment name:'SKIP',value:'N'
-                        //     }
-                        //     steps{
-                        //         script {
-                        //             sh """
-                        //             ansible --version
-                        //             cd ansible_infra
-                        //             cd ansible_playbooks
-                        //             env
-                        //             ansible-playbook identify_controlplane.yml -i inv
-                        //             cat inv
-                        //             """
-                        //         }
-                        //     }
-                        // }
+                        stage('Prepare inv file'){
+                            when {
+                                environment name:'SKIP',value:'N'
+                            }
+                            steps{
+                                script {
+                                    sh """
+                                    ansible --version
+                                    cd ansible_infra
+                                    cd ansible_playbooks
+                                    env
+                                    ansible-playbook identify_controlplane.yml -i inv
+                                    cat inv
+                                    """
+                                }
+                            }
+                        }
                     }
                 }
-                // stage("bootstrap instance"){
-                //     when{
-                //                 environment name:'SKIP',value:'N'
-                //             }
-                //     steps{
-                //         script {
-                //                     sh """
-                //                     cd ansible_infra
-                //                     cd ansible_role
-                //                     aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
-                //                     ls -a
-                //                     pwd
-                //                     ansible-playbook main.yml -i inv                                    
-                //                     """
 
-                //                 }
-                //     }
-                // }
-
-                // stage("test kubectl"){
-                //     steps{
-                //         script {
-                //                     sh """
-                //                     cd ansible_infra
-                //                     cd ansible_playbooks
-                //                     aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
-                //                     ansible-playbook testkubectl.yml -i inv                                    
-                //                     """
-
-                //                 }
-                //     }
-                // }
             }
             
 
