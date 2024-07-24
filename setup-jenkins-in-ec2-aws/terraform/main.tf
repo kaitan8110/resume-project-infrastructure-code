@@ -33,12 +33,10 @@ resource "aws_route_table" "main_rt" {
 
   route {
     cidr_block = "10.0.2.0/24"  # controlplane_subnet
-    gateway_id = "local"  # Use local routing within VPC
   }
 
   route {
     cidr_block = "10.0.3.0/24"  # worker_subnet
-    gateway_id = "local"  # Use local routing within VPC
   }
 
   route {
