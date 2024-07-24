@@ -59,3 +59,14 @@
       yum:
         name: ansible
         state: present
+
+    - name: Install pip
+      yum:
+        name: python3-pip
+        state: present
+
+    - name: Install amazon.aws collection
+      command: >
+        ansible-galaxy collection install amazon.aws
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/jenkins/.local/bin:/home/jenkins/bin"
