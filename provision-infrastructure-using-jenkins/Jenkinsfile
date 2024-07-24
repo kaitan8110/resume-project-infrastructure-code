@@ -8,7 +8,7 @@ pipeline {
         TERRADESTROY = "N"
         FIRST_DEPLOY = "Y"
         STATE_BUCKET = "terraform-state-bucket-unique123456"  // Ensure this name is unique
-        ANSIBLE_BUCKET_NAME = "ansible-state-bucket-unique123456"  // Ensure this name is unique
+        ANSIBLE_BUCKET_NAME = "ansible-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_SSH_PRIVATE_KEY = credentials('ansible-ssh-key')
     }
 
