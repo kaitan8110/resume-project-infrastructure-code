@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.59.0"
+    }
+  }
+}
+
 # Create VPC
 resource "aws_vpc" "main_vpc" {
   cidr_block = "10.0.0.0/16"
@@ -30,14 +39,6 @@ resource "aws_internet_gateway" "main_igw" {
 # Create Route Table
 resource "aws_route_table" "main_rt" {
   vpc_id = aws_vpc.main_vpc.id
-
-  route {
-    cidr_block = "10.0.2.0/24"  # controlplane_subnet
-  }
-
-  route {
-    cidr_block = "10.0.3.0/24"  # worker_subnet
-  }
 
   route {
     cidr_block = "0.0.0.0/0"
