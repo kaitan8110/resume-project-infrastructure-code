@@ -54,3 +54,8 @@
         state: present
       register: terraform_install_result
       failed_when: "'No package terraform available.' in terraform_install_result.msg"
+
+    - name: Install Ansible
+      yum:
+        name: ansible
+        state: present
