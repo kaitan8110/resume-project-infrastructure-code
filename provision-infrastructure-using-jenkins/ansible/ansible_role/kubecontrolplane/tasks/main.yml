@@ -1,17 +1,25 @@
 ---
 # tasks file for kubecontrolplane
 
+- name: Run the equivalent of "yum update" as a separate step
+  yum:
+    name: "*"
+    state: latest
 
-- name: Run the equivalent of "apt-get update" as a separate step
-  apt:
-    update_cache: yes
 - name: Install utils
-  apt:
+  yum:
     name: "{{ item }}"
     state: present
   loop:
-    - apt-transport-https
-    - software-properties-common
+    - yum-utils
     - curl
-- include_tasks: install_docker.yml
-- include_tasks: install_kubernetes.yml
+    - wget
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Install software-properties-common equivalent
+  amazon-linux-extras:
+    name: "epel"
+    state: present
+
+- include_tasks: install_docker_kubernetes.yml

@@ -146,6 +146,23 @@ pipeline {
                     }
                 }
 
+                stage("bootstrap controlplane"){
+                    when {
+                        environment name:'SKIP',value:'N'
+                    }
+                    steps {
+                        script {
+                            sh """
+                            cd provision-infrastructure-using-jenkins/ansible/ansible_role
+                            aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
+                            ls -a
+                            pwd
+                            ansible-playbook main.yml -i inv                                    
+                            """
+                        }
+                    }
+                }
+
             }
             
 

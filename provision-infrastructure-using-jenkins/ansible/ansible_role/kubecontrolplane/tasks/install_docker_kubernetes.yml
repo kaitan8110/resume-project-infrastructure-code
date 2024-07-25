@@ -1,0 +1,113 @@
+---
+- name: Install Kubernetes on Amazon Linux
+  hosts: all
+  become: true
+  tasks:
+    - name: Add Kubernetes repository
+      yum_repository:
+        name: kubernetes
+        description: Kubernetes Repository
+        baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        gpgcheck: yes
+        gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+                https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        enabled: yes
+
+    - name: Add Docker repository
+      yum_repository:
+        name: docker-ce-stable
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/centos/gpg
+
+    - name: Install Docker packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ec2-user to the docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+
+    - name: Install Kubernetes packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+    - name: Ensure kubelet is started and enabled
+      service:
+        name: kubelet
+        state: started
+        enabled: yes
+
+    - name: Disable swap
+      command: swapoff -a
+
+    - name: Remove swap entry from /etc/fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^\s*[^#]+swap\s+'
+        replace: '# &'
+
+    - name: Update Docker daemon configuration
+      template:
+        src: daemon.json.j2
+        dest: /etc/docker/daemon.json
+      notify: restart docker
+
+    - name: Remove containerd config
+      file:
+        path: /etc/containerd/config.toml
+        state: absent
+
+    - name: Restart containerd
+      service:
+        name: containerd
+        state: restarted
+
+    - name: Initialize Kubernetes
+      command: kubeadm init --pod-network-cidr=10.244.0.0/16
+      register: kubeadm_init_output
+
+    - name: Create .kube directory
+      file:
+        path: /home/ec2-user/.kube
+        state: directory
+        mode: '0755'
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Copy kubeconfig file
+      command: >
+        cp -i /etc/kubernetes/admin.conf /home/ec2-user/.kube/config
+      become: true
+
+    - name: Change ownership of kubeconfig file
+      file:
+        path: /home/ec2-user/.kube/config
+        owner: ec2-user
+        group: ec2-user
+        mode: '0644'
+
+    - name: Install network plugin
+      command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      environment:
+        KUBECONFIG: /home/ec2-user/.kube/config
