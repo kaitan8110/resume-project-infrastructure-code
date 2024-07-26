@@ -170,6 +170,7 @@
   },
   "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/tasks/install_docker_kubernetes.yml",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/terraform.tfvars",
     "provision-infrastructure-using-jenkins/terraform/networking/terraform.tfvars",
@@ -179,7 +180,6 @@
     "Untitled.canvas",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/variables.tf",
     "provision-infrastructure-using-jenkins/Jenkinsfile",
-    "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/main.tf",
     "provision-infrastructure-using-jenkins/terraform/node_asg/main.tf",
     "provision-infrastructure-using-jenkins/terraform/networking/main.tf",

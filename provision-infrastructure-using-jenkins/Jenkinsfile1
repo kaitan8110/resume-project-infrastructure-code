@@ -11,16 +11,10 @@ pipeline {
         ANSIBLE_BUCKET_NAME = "ansible-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_SSH_PRIVATE_KEY = credentials('ansible-ssh-key')
     }
-    parameters {
-        string(name: 'STAGE_TO_RUN', defaultValue: '', description: 'Comma-separated list of stages to run')
-    }
+
     stages {
         stage("Create Terraform State Buckets") {
             when {
-                anyOf {
-                    expression { params.STAGE_TO_RUN == '' }
-                    expression { params.STAGE_TO_RUN.contains('Create Terraform State Buckets') }
-                }
                 allOf {
                     environment name: 'FIRST_DEPLOY', value: 'Y'
                     environment name: 'TERRADESTROY', value: 'N'
@@ -45,10 +39,6 @@ pipeline {
 
         stage("Deploy Ansible Infra") {
             when {
-                anyOf {
-                    expression { params.STAGE_TO_RUN == '' }
-                    expression { params.STAGE_TO_RUN.contains('Deploy Ansible Infra') }
-                }
                 allOf {
                     environment name: 'TERRADESTROY', value: 'N'
                     environment name: 'SKIP', value: 'N'
@@ -76,19 +66,15 @@ pipeline {
             }
         }
 
-        stage("Deploy Networking") {
+        stage("Deploy Networking"){
             when {
-                anyOf {
-                    expression { params.STAGE_TO_RUN == '' }
-                    expression { params.STAGE_TO_RUN.contains('Deploy Networking') }
-                }
                 allOf {
-                    environment name: 'TERRADESTROY', value: 'N'
-                    environment name: 'SKIP', value: 'N'
+                    environment name:'TERRADESTROY',value:'N'
+                    environment name:'SKIP',value:'N'
                 }
             }
             stages {
-                stage('Validate n/w Infra') {
+                stage('Validate n/w Infra'){
                     steps {
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/networking
@@ -97,8 +83,8 @@ pipeline {
                         '''
                     }
                 }
-                stage('Deploy n/w Infra') {
-                    steps {
+                stage('Deploy n/w Infra'){
+                    steps{
                         sh '''
                         cd provision-infrastructure-using-jenkins/terraform/networking
                         terraform plan -out outfile
@@ -107,27 +93,24 @@ pipeline {
                     }
                 }
             }
+
         }
 
-        stage("Deploy Controlplane") {
-            when {
-                anyOf {
-                    expression { params.STAGE_TO_RUN == '' }
-                    expression { params.STAGE_TO_RUN.contains('Deploy Controlplane') }
-                }
+        stage("Deploy Controlplane"){
+             when {
                 allOf {
-                    environment name: 'TERRADESTROY', value: 'N'
-                    environment name: 'SKIP', value: 'N'
+                    environment name:'TERRADESTROY',value:'N'
+                    environment name:'SKIP',value:'N'
                 }
             }
             stages {
-                stage("Deploy controlplane") {
+                stage("Deploy controlplane"){
                     when {
-                        environment name: 'SKIP', value: 'N'
+                        environment name:'SKIP',value:'N'
                     }
-                    stages {
-                        stage('Validate controlplane infra') {
-                            steps {
+                    stages{
+                        stage('Validate controlplane infra'){
+                            steps{
                                 sh '''
                                 cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
                                 terraform init
@@ -135,8 +118,8 @@ pipeline {
                                 '''
                             }
                         }
-                        stage('Deploy controlplane infra') {
-                            steps {
+                        stage('Deploy controlplane infra'){
+                            steps{
                                 sh '''
                                 cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
                                 terraform plan -out outfile
@@ -144,11 +127,11 @@ pipeline {
                                 '''
                             }
                         }
-                        stage('Prepare inv file') {
+                        stage('Prepare inv file'){
                             when {
-                                environment name: 'SKIP', value: 'N'
+                                environment name:'SKIP',value:'N'
                             }
-                            steps {
+                            steps{
                                 script {
                                     sh """
                                     ansible --version
@@ -163,9 +146,9 @@ pipeline {
                     }
                 }
 
-                stage("bootstrap controlplane") {
+                stage("bootstrap controlplane"){
                     when {
-                        environment name: 'SKIP', value: 'N'
+                        environment name:'SKIP',value:'N'
                     }
                     steps {
                         script {
@@ -179,8 +162,15 @@ pipeline {
                         }
                     }
                 }
+
             }
+            
+
         }
+
+        // Additional stages as defined in your original Jenkinsfile
+        // Ensure that each stage follows the correct indentation and syntax
+
     }
 
     post {
