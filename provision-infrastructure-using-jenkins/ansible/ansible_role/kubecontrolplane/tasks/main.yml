@@ -17,9 +17,10 @@
     - device-mapper-persistent-data
     - lvm2
 
-- name: Install software-properties-common equivalent
-  amazon-linux-extras:
-    name: "epel"
-    state: present
+- name: Enable EPEL repository (Extra Packages for Enterprise Linux)
+  shell: "amazon-linux-extras install epel -y && touch /var/tmp/epel_installed"
+  args:
+    creates: /var/tmp/epel_installed
+  become: true
 
 - include_tasks: install_docker_kubernetes.yml
