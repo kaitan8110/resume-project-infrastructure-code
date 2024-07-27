@@ -181,6 +181,59 @@ pipeline {
                 }
             }
         }
+
+        // Destroying resources in reverse order
+        stage("Destroy Infrastructure") {
+            when {
+                anyOf {
+                    expression { params.STAGE_TO_RUN == '' }
+                    expression { params.STAGE_TO_RUN.contains('Destroy Infrastructure') }
+                }
+                allOf {
+                    environment name: 'TERRADESTROY', value: 'Y'
+                    environment name: 'SKIP', value: 'N'
+                }
+            }
+            steps {
+                input message: 'Are you sure you want to destroy all infrastructure?', ok: 'Destroy'
+                script {
+                    // Destroy Controlplane Infra
+                    sh '''
+                    cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
+                    terraform destroy -auto-approve
+                    '''
+                    // Destroy Networking Infra
+                    sh '''
+                    cd provision-infrastructure-using-jenkins/terraform/networking
+                    terraform destroy -auto-approve
+                    '''
+                    // Destroy Ansible Infra
+                    sh '''
+                    cd provision-infrastructure-using-jenkins/terraform/s3-bucket
+                    terraform destroy -auto-approve
+                    '''
+                }
+            }
+        }
+
+        stage("Delete State Buckets") {
+            when {
+                anyOf {
+                    expression { params.STAGE_TO_RUN == '' }
+                    expression { params.STAGE_TO_RUN.contains('Delete State Buckets') }
+                }
+                environment name: 'TERRADESTROY', value: 'Y'
+            }
+            steps {
+                input message: 'Are you sure you want to delete the state buckets?', ok: 'Delete'
+                script {
+                    // Empty and delete the Terraform state bucket
+                    sh "aws s3 rm s3://${STATE_BUCKET} --recursive"
+                    sh "aws s3api delete-bucket --bucket ${STATE_BUCKET}"
+                }
+            }
+        }
+
     }
 
     post {
