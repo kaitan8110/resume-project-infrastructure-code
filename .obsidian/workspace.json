@@ -90,7 +90,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "9370c5a12195f90a",
@@ -168,7 +169,7 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "66aab5911511322f",
+  "active": "aabc89fc7b7b97fc",
   "lastOpenFiles": [
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/tasks/install_docker_kubernetes.yml",
