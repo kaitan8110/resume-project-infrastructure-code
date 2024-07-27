@@ -182,6 +182,24 @@ pipeline {
             }
         }
 
+        stage("Empty S3 Buckets") {
+            when {
+                anyOf {
+                    expression { params.STAGE_TO_RUN == '' }
+                    expression { params.STAGE_TO_RUN.contains('Empty S3 Buckets') }
+                }
+                allOf {
+                    environment name: 'TERRADESTROY', value: 'Y'
+                }
+            }
+            steps {
+                script {
+                    // Empty the S3 bucket
+                    sh "aws s3 rm s3://${ANSIBLE_BUCKET_NAME} --recursive"
+                }
+            }
+        }
+
         stage("Destroy Infrastructure") {
             when {
                 anyOf {
