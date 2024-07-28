@@ -1,0 +1,27 @@
+# Paste and edit the below code accordingly to ~/.ssh/config
+# Place the <> field accordingly
+# ProxyCommand: This is a seamless way to SSH into your private instances via the bastion host. You need to configure your local SSH client to use the bastion host as a proxy for the connection to your jenkins-vm.
+
+# Sample
+Host bastion
+    HostName <bastion_host_public_ip>
+    User ec2-user
+    IdentityFile /path/to/your/bastion-key.pem
+
+Host jenkins-vm
+    HostName <jenkins_vm_private_ip>
+    User ec2-user
+    IdentityFile /path/to/your/jenkins-vm-key.pem
+    ProxyCommand ssh -W %h:%p bastion
+
+# Example
+Host bastion
+    HostName 18.143.246.178
+    User ec2-user
+    IdentityFile /Users/kaiwork/Desktop/github/resume-project/secrets/resume-project-key-pair.pem
+
+Host jenkins-vm
+    HostName 10.0.2.234
+    User ec2-user
+    IdentityFile /Users/kaiwork/Desktop/github/resume-project/secrets/resume-project-key-pair.pem
+    ProxyCommand ssh -W %h:%p bastion

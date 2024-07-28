@@ -1,0 +1,117 @@
+To access Jenkins in your browser via the bastion host, you should follow these steps:
+
+Start the SSH tunnel: This command sets up an SSH tunnel from your local machine to the Jenkins server via the bastion host.
+
+"ssh -i resume-project-key-pair.pem -L 8080:10.0.2.234:8080 ec2-user@18.143.246.178"
+Open your browser: Navigate to http://localhost:8080. This URL should now be forwarded to your Jenkins server.
+
+Make sure that:
+
+The Jenkins service is running on the Jenkins VM.
+The Jenkins VM has the correct security group settings to allow traffic on port 8080 from the bastion host.
+The bastion host allows inbound SSH connections and outbound connections to the Jenkins VM on port 8080.
+Here's a quick check list:
+
+Check Jenkins VM Security Group:
+Ensure it allows inbound traffic on port 8080 from the bastion host's private IP address.
+
+Check Bastion Host Security Group:
+Ensure it allows outbound traffic to the Jenkins VM on port 8080.
+
+Run Jenkins Service:
+Ensure Jenkins service is running on the Jenkins VM:
+
+"sudo systemctl status jenkins"
+By following these steps, you should be able to access the Jenkins UI through the SSH tunnel set up via the bastion host.
+
+
+######################################## Additional Details ###############################################
+
+Looks like the SSH tunnel setup command is correct, but there might be additional configuration required on the bastion host to allow the tunnel to work properly.
+
+Steps to Troubleshoot and Fix
+Check if Jenkins is Running and Listening on Port 8080 on Jenkins VM
+
+SSH into the Jenkins VM directly from the bastion host and check the Jenkins service status:
+
+sh
+Copy code
+ssh -i /path/to/your-key.pem ec2-user@<jenkins-vm-private-ip>
+sudo systemctl status jenkins
+Ensure Jenkins is running. If it's not, start it with:
+
+sh
+Copy code
+sudo systemctl start jenkins
+Verify Jenkins is listening on port 8080:
+
+sh
+Copy code
+sudo netstat -tuln | grep 8080
+Check Security Groups
+
+Ensure that the security group associated with the Jenkins VM allows inbound traffic on port 8080 from the bastion host.
+
+Verify SSH Tunnel Configuration
+
+On your local machine, confirm the SSH tunnel command is correct:
+
+sh
+Copy code
+ssh -i /path/to/your-key.pem -L 8080:localhost:8080 ec2-user@<bastion-host-public-ip>
+This command should forward your local port 8080 to the Jenkins VM’s port 8080 via the bastion host.
+
+Check Network Configuration on Bastion Host
+
+Ensure the bastion host has the necessary configuration to allow the tunnel. Specifically, make sure it can reach the Jenkins VM and the port forwarding is set up correctly.
+
+Test Connectivity
+
+From the bastion host, test connectivity to the Jenkins VM’s port 8080:
+
+sh
+Copy code
+curl http://<jenkins-vm-private-ip>:8080
+You should see the HTML content of the Jenkins login page or a related response. If this fails, it might indicate a network or security group issue.
+
+Browser Access
+
+After setting up the SSH tunnel, open a web browser and navigate to http://localhost:8080.
+
+Additional Configuration on Bastion Host
+If you still encounter issues, you might need to configure SSH to allow port forwarding explicitly:
+
+Edit the SSH Config File on Bastion Host
+
+Ensure the SSH server on the bastion host allows port forwarding. Edit /etc/ssh/sshd_config on the bastion host:
+
+sh
+Copy code
+sudo vi /etc/ssh/sshd_config
+Ensure the following lines are present and uncommented:
+
+sh
+Copy code
+AllowTcpForwarding yes
+GatewayPorts yes
+Save the file and restart the SSH service:
+
+sh
+Copy code
+sudo systemctl restart sshd
+Test Again
+
+Retry setting up the SSH tunnel and accessing Jenkins.
+
+Example Complete SSH Command for Clarity
+To forward the local port to the Jenkins VM’s port 8080 through the bastion host, the command should look like this:
+
+sh
+Copy code
+ssh -i /path/to/your-key.pem -L 8080:<jenkins-vm-private-ip>:8080 ec2-user@<bastion-host-public-ip>
+This command assumes:
+
+Your SSH key is correctly specified.
+<bastion-host-public-ip> is the public IP address of the bastion host.
+<jenkins-vm-private-ip> is the private IP address of the Jenkins VM.
+After running this command, you should be able to open your browser and navigate to http://localhost:8080 to access the Jenkins web interface.
