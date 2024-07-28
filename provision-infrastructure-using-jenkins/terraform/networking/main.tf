@@ -19,21 +19,21 @@ provider "aws" {
 
 resource "aws_subnet" "controlplane_subnet" {
   vpc_id     = var.vpc_id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = "10.0.3.0/24"
   availability_zone = "ap-southeast-1b"
 
   tags = {
-    Name = "controlplane_subnet"
+    Name = "controlplane-subnet"
   }
 }
 
 resource "aws_subnet" "worker_subnet" {
   vpc_id     = var.vpc_id
-  cidr_block = "10.0.3.0/24"
+  cidr_block = "10.0.4.0/24"
   availability_zone = "ap-southeast-1c"
 
   tags = {
-    Name = "worker_subnet"
+    Name = "worker-subnet"
   }
 }
 
@@ -43,11 +43,11 @@ resource "aws_route_table" "controlplane_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = var.igw_id
+    nat_gateway_id = var.nat_gateway_id
   }
 
   tags = {
-    Name = "ControlplaneRouteTable"
+    Name = "controlplane-route-table"
   }
 }
 
@@ -56,11 +56,11 @@ resource "aws_route_table" "worker_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = var.igw_id
+    nat_gateway_id = var.nat_gateway_id
   }
 
   tags = {
-    Name = "WorkerRouteTable"
+    Name = "worker-route-table"
   }
 }
 
@@ -117,6 +117,6 @@ resource "aws_security_group" "kube_sg" {
   }
 
   tags = {
-    Name = "kube_sg"
+    Name = "kube-sg"
   }
 }

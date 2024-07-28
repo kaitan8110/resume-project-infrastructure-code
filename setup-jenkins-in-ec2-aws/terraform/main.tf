@@ -74,7 +74,7 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name = "main-route-table"
+    Name = "public-route-table"
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_route_table" "jenkins_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat_gw.id
+    nat_gateway_id = aws_nat_gateway.nat_gw.id
   }
 
   tags = {
@@ -99,7 +99,7 @@ resource "aws_route_table_association" "public_rta" {
 }
 
 # Associate Jenkins Route Table with Jenkins Subnet
-resource "aws_route_table_association" "public_rta" {
+resource "aws_route_table_association" "jenkins_rta" {
   subnet_id      = aws_subnet.jenkins_subnet.id
   route_table_id = aws_route_table.jenkins_rt.id
 }
@@ -160,12 +160,12 @@ resource "aws_security_group" "jenkins_sg" {
 }
 
 # Create Key Pair
-resource "aws_key_pair" "main_key_pair" {
+resource "aws_key_pair" "resume_project_key_pair" {
   key_name   = var.key_name
   public_key = file(var.public_key_path)
 
   tags = {
-    Name = "main-key-pair"
+    Name = "resume-project-key-pair"
   }
 }
 

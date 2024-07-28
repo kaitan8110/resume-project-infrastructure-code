@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = "ap-southeast-1"
         SKIP = "N"
-        TERRADESTROY = "Y"
+        TERRADESTROY = "N"
         FIRST_DEPLOY = "Y"
         STATE_BUCKET = "terraform-state-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_BUCKET_NAME = "ansible-bucket-unique123456"  // Ensure this name is unique

@@ -39,8 +39,8 @@ resource "aws_s3_bucket" "ansible_bucket" {
   bucket = var.ansible_bucket
 
   tags = {
-    Name        = "AnsibleBucket"
-    Environment = "Dev"
+    Name        = "ansible-bucket"
+    Environment = "dev"
   }
 
   lifecycle {

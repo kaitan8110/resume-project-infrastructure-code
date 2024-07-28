@@ -169,8 +169,9 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "aabc89fc7b7b97fc",
+  "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "README.md",
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/tasks/install_docker_kubernetes.yml",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/terraform.tfvars",
@@ -183,7 +184,6 @@
     "provision-infrastructure-using-jenkins/Jenkinsfile",
     "provision-infrastructure-using-jenkins/terraform/s3-bucket/main.tf",
     "provision-infrastructure-using-jenkins/terraform/node_asg/main.tf",
-    "provision-infrastructure-using-jenkins/terraform/networking/main.tf",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
@@ -191,7 +191,6 @@
     "2. Provision-infrastructure-using-Jenkins.md",
     "1. Setup-jenkins-in-ec2-aws.md",
     "1. setup-jenkins-in-ec2-aws.md",
-    "One-setup-jenkins-in-ec2-aws.md",
-    "README.md"
+    "One-setup-jenkins-in-ec2-aws.md"
   ]
 }

@@ -21,7 +21,7 @@ data "aws_subnet" "controlplane_subnet_id" {
   
   filter {
     name   = "tag:Name"
-    values = ["controlplane_subnet"]
+    values = ["controlplane-subnet"]
   }
 
 #   most_recent = true
@@ -31,7 +31,7 @@ data "aws_security_group" "kube_sg_id" {
   
   filter {
     name   = "tag:Name"
-    values = ["kube_sg"]
+    values = ["kube-sg"]
   }
 
 #   most_recent = true
@@ -41,7 +41,7 @@ data "aws_key_pair" "key_pair_id" {
   
   filter {
     name   = "tag:Name"
-    values = ["DeployerKeyPair"]
+    values = ["resume-project-key-pair"]
   }
 
 #   most_recent = true
@@ -65,7 +65,7 @@ resource "aws_instance" "controlplane" {
   key_name = data.aws_key_pair.key_pair_id.key_name
 
   tags= {
-    Name = "KubeCtrlPlane"
+    Name = "kube-control-plane"
   }
 
 }
