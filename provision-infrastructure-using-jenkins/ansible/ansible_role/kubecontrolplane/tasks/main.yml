@@ -6,16 +6,36 @@
     name: "*"
     state: latest
 
-- name: Install utils
+- name: Install utils (excluding curl)
   yum:
     name: "{{ item }}"
     state: present
   loop:
     - yum-utils
-    - curl
     - wget
     - device-mapper-persistent-data
     - lvm2
+
+- name: Check if curl-minimal is installed
+  shell: "rpm -q curl-minimal"
+  register: curl_minimal_installed
+  ignore_errors: yes
+
+- name: Debug curl_minimal_installed
+  debug:
+    var: curl_minimal_installed
+
+- name: Remove curl-minimal if installed
+  yum:
+    name: curl-minimal
+    state: absent
+  when: curl_minimal_installed.rc == 0
+
+- name: Install curl if curl-minimal was removed
+  yum:
+    name: curl
+    state: present
+  when: curl_minimal_installed.rc == 0
 
 - name: Enable EPEL repository (Extra Packages for Enterprise Linux)
   shell: "amazon-linux-extras install epel -y && touch /var/tmp/epel_installed"
