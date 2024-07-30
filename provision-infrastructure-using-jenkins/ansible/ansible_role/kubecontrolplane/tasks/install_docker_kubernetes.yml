@@ -1,7 +1,9 @@
 ---
-- name: Install Kubernetes on Amazon Linux
-  hosts: all
+- hosts: kubectrl
+  gather_facts: yes
   become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.9
   tasks:
     - name: Add Kubernetes repository
       yum_repository:
