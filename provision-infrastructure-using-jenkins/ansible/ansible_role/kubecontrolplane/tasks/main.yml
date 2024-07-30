@@ -38,9 +38,15 @@
   when: curl_minimal_installed.rc == 0
 
 - name: Enable EPEL repository (Extra Packages for Enterprise Linux)
-  shell: "amazon-linux-extras install epel -y && touch /var/tmp/epel_installed"
+  command: "dnf install -y epel-release"
   args:
     creates: /var/tmp/epel_installed
-  become: true
+  register: epel_installed
+  changed_when: "'Complete!' in epel_installed.stdout"
+  ignore_errors: yes
+
+- name: Debug epel_installed
+  debug:
+    var: epel_installed
 
 - include_tasks: install_docker_kubernetes.yml
