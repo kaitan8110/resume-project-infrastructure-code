@@ -36,14 +36,23 @@
     groups: docker
     append: yes
 
-- name: Install Kubernetes packages
-  yum:
-    name: "{{ item }}"
-    state: latest
-  loop:
-    - kubelet
-    - kubeadm
-    - kubectl
+- name: Download and install kubectl
+  get_url:
+    url: https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+
+- name: Download and install kubeadm
+  get_url:
+    url: https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubeadm
+    dest: /usr/local/bin/kubeadm
+    mode: '0755'
+
+- name: Download and install kubelet
+  get_url:
+    url: https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubelet
+    dest: /usr/local/bin/kubelet
+    mode: '0755'
 
 - name: Ensure kubelet is started and enabled
   service:
