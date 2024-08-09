@@ -10,7 +10,9 @@
 
 - name: Remove conflicting Docker packages
   yum:
-    name: docker-ce-cli
+    name:
+      - docker-ce-cli
+      - docker-buildx-plugin
     state: absent
   ignore_errors: yes
 
