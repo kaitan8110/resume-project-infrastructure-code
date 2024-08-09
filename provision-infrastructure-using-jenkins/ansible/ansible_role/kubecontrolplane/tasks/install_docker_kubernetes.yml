@@ -8,22 +8,13 @@
             https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     enabled: yes
 
-- name: Add Docker repository
-  yum_repository:
-    name: docker-ce-stable
-    description: Docker CE Stable - $basearch
-    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
-    enabled: yes
-    gpgcheck: yes
-    gpgkey: https://download.docker.com/linux/centos/gpg
-
-- name: Install Docker packages
+- name: Install Docker from Amazon Linux repository
   yum:
     name: "{{ item }}"
     state: latest
   loop:
-    - docker-ce
-    - docker-ce-cli
+    - docker
+    - docker-cli
     - containerd.io
 
 - name: Start and enable Docker service
