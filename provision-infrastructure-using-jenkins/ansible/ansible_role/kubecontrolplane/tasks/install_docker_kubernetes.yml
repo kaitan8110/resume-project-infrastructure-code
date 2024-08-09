@@ -8,13 +8,18 @@
             https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     enabled: yes
 
+- name: Remove conflicting Docker packages
+  yum:
+    name: docker-ce-cli
+    state: absent
+  ignore_errors: yes
+
 - name: Install Docker from Amazon Linux repository
   yum:
     name: "{{ item }}"
     state: latest
   loop:
     - docker
-    - docker-cli
     - containerd.io
 
 - name: Start and enable Docker service
