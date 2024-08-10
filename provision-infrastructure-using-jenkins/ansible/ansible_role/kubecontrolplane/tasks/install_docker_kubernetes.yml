@@ -125,10 +125,27 @@
   debug:
     msg: "Consider upgrading your EC2 instance to at least 2 CPUs and 2 GB RAM."
 
+- name: Install crictl manually
+  block:
+    - name: Download crictl
+      get_url:
+        url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.28.0/crictl-v1.28.0-linux-amd64.tar.gz
+        dest: /tmp/crictl-v1.28.0-linux-amd64.tar.gz
+
+    - name: Extract crictl
+      unarchive:
+        src: /tmp/crictl-v1.28.0-linux-amd64.tar.gz
+        dest: /usr/local/bin
+        remote_src: yes
+
+    - name: Make crictl executable
+      file:
+        path: /usr/local/bin/crictl
+        mode: '0755'
+
 - name: Install required tools
   yum:
     name:
-      - cri-tools
       - conntrack
       - socat
       - iproute-tc
