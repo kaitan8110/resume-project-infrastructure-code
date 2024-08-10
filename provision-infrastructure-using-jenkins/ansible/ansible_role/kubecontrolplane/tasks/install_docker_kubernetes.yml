@@ -79,8 +79,9 @@
       EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
       EnvironmentFile=-/etc/default/kubelet
       ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/cpuset/system.slice/kubelet.service
-      ExecStartPre=/bin/bash -c '/bin/echo $$ > /sys/fs/cgroup/cpuset/system.slice/kubelet.service/cgroup.procs'
-
+      # The following line is removed
+      # ExecStartPre=/bin/bash -c '/bin/echo $$ > /sys/fs/cgroup/cpuset/system.slice/kubelet.service/cgroup.procs'
+      
       [Install]
       WantedBy=multi-user.target
     dest: /etc/systemd/system/kubelet.service
