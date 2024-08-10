@@ -121,8 +121,21 @@
     name: containerd
     state: restarted
 
+- name: Upgrade instance type (manual step)
+  debug:
+    msg: "Consider upgrading your EC2 instance to at least 2 CPUs and 2 GB RAM."
+
+- name: Install required tools
+  yum:
+    name:
+      - cri-tools
+      - conntrack
+      - socat
+      - iproute-tc
+    state: present
+
 - name: Initialize Kubernetes
-  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=NumCPU,Mem,FileExisting-crictl,FileExisting-conntrack
   register: kubeadm_init_output
 
 - name: Create .kube directory
