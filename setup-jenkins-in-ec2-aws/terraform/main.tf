@@ -178,7 +178,7 @@ resource "aws_eip" "bastion_eip" {
 
 # Create EC2 Instance for Bastion Host
 resource "aws_instance" "bastion_host" {
-  ami           = "ami-0e97ea97a2f374e3d" # Amazon Linux 3 AMI (Example, use a valid AMI)
+  ami           = "ami-0497a974f8d5dcef8" # Amazon Linux 3 AMI (Example, use a valid AMI)
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
   key_name      = var.key_name
@@ -191,10 +191,6 @@ resource "aws_instance" "bastion_host" {
 
   associate_public_ip_address = true
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              EOF
 }
 
 # Associate Elastic IP with the instance
@@ -205,7 +201,7 @@ resource "aws_eip_association" "bastion_eip_assoc" {
 
 # Create EC2 Instance
 resource "aws_instance" "jenkins_vm" {
-  ami           = "ami-0e97ea97a2f374e3d" # Amazon Linux 3 AMI (Example, use a valid Jenkins-compatible AMI)
+  ami           = "ami-0497a974f8d5dcef8" # Amazon Linux 3 AMI (Example, use a valid Jenkins-compatible AMI)
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.jenkins_subnet.id
   key_name      = var.key_name
@@ -216,11 +212,6 @@ resource "aws_instance" "jenkins_vm" {
 
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              sudo amazon-linux-extras install -y ansible2
-              EOF
 }
 
 # Output the public IP of the Bastion Host
