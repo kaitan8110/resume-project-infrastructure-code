@@ -5,10 +5,10 @@
 ; 10.0.2.234 ansible_ssh_user=ec2-user ansible_ssh_private_key_file=../../secrets/resume-project-key-pair.pem ansible_ssh_common_args='-o ProxyJump=ec2-user@18.143.246.178 -i ../../secrets/resume-project-key-pair.pem'
 
 [bastion]
-bastion_host ansible_host=18.143.246.178 ansible_user=ec2-user ansible_ssh_private_key_file=../../secrets/resume-project-key-pair.pem
+bastion_host ansible_host=18.143.246.178 ansible_user=ubuntu ansible_ssh_private_key_file=../../secrets/resume-project-key-pair.pem
 
 [jenkins]
-jenkins_vm ansible_host=10.0.2.234 ansible_user=ec2-user ansible_ssh_private_key_file=../../secrets/resume-project-key-pair.pem ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i ../../secrets/resume-project-key-pair.pem ec2-user@18.143.246.178"'
+jenkins_vm ansible_host=10.0.2.239 ansible_user=ubuntu ansible_ssh_private_key_file=../../secrets/resume-project-key-pair.pem ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i ../../secrets/resume-project-key-pair.pem ubuntu@18.143.246.178"'
 
 
 

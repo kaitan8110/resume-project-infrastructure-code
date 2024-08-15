@@ -27,7 +27,7 @@
     - name: add ansible user line
       lineinfile:
         path: ./inv
-        line: "ansible_user=ec2-user"
+        line: "ansible_user=ubuntu"
     - name: add ansible key line
       lineinfile:
         path: ./inv

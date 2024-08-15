@@ -1,0 +1,97 @@
+- hosts: jenkins
+  become: true
+  tasks:
+    - name: Install OpenJDK 11
+      apt:
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
+
+    - name: Remove expired Jenkins GPG key (if present)
+      ansible.builtin.file:
+        path: /usr/share/keyrings/jenkins-keyring.asc
+        state: absent
+
+    - name: Add the new Jenkins GPG key
+      ansible.builtin.shell: >
+        curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+      changed_when: false
+
+    - name: Add Jenkins repository
+      apt_repository:
+        repo: 'deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/'
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+
+    - name: Start Jenkins service
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Install dependencies for managing repositories
+      apt:
+        name: software-properties-common
+        state: present
+
+    - name: Remove expired HashiCorp GPG key (if present)
+      ansible.builtin.file:
+        path: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+        state: absent
+
+    - name: Add the new HashiCorp GPG key
+      ansible.builtin.shell: >
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      changed_when: false
+      become: true
+
+    - name: Add HashiCorp repository
+      apt_repository:
+        repo: 'deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main'
+        state: present
+        filename: hashicorp
+      become: true
+
+    - name: Update apt repository cache
+      apt:
+        update_cache: yes
+
+    - name: Install Terraform
+      apt:
+        name: terraform
+        state: present
+      register: terraform_install_result
+
+    - name: Install Ansible
+      apt:
+        name: ansible
+        state: present
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install boto3 and botocore
+      pip:
+        name: 
+          - boto3
+          - botocore
+        state: present
+
+    - name: Install amazon.aws collection
+      ansible.builtin.command: >
+        ansible-galaxy collection install amazon.aws
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/jenkins/.local/bin:/home/jenkins/bin"
+
+    - name: Ensure jenkins user can sudo without password
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'

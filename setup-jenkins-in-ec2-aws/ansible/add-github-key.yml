@@ -1,0 +1,29 @@
+---
+- hosts: jenkins
+  become: true
+  tasks:
+    - name: Install SSH client if not present
+      apt:
+        name: openssh-client
+        state: present
+        update_cache: yes
+
+    - name: Ensure known_hosts file directory exists
+      file:
+        path: /etc/ssh
+        state: directory
+        mode: '0755'
+
+    - name: Add GitHub SSH key to known_hosts
+      shell: ssh-keyscan github.com >> /etc/ssh/ssh_known_hosts
+      args:
+        creates: /etc/ssh/ssh_known_hosts
+
+    - name: Verify GitHub SSH key in known_hosts
+      command: grep github.com /etc/ssh/ssh_known_hosts
+      register: github_key_check
+
+    - name: Debug output
+      debug:
+        msg: "{{ github_key_check.stdout }}"
+

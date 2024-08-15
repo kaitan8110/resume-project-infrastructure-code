@@ -1,0 +1,44 @@
+---
+- hosts: jenkins
+  become: true
+  tasks:
+    - name: Check if swap is already enabled
+      command: swapon --show
+      register: swap_status
+      changed_when: false
+
+    - name: Create a swap file if none exists
+      command: fallocate -l 2G /swapfile
+      when: swap_status.stdout == ""
+      args:
+        creates: /swapfile
+
+    - name: Set correct permissions on swapfile
+      file:
+        path: /swapfile
+        mode: '0600'
+        owner: root
+        group: root
+      when: swap_status.stdout == ""
+
+    - name: Make the file a swap space
+      command: mkswap /swapfile
+      when: swap_status.stdout == ""
+
+    - name: Enable the swap file
+      command: swapon /swapfile
+      when: swap_status.stdout == ""
+
+    - name: Ensure swap is persistent across reboots
+      lineinfile:
+        path: /etc/fstab
+        line: '/swapfile none swap sw 0 0'
+        create: yes
+      when: swap_status.stdout == ""
+
+    - name: Verify swap space
+      command: swapon --show
+      register: swap_verify
+
+    - debug:
+        msg: "Swap space added: {{ swap_verify.stdout }}"
