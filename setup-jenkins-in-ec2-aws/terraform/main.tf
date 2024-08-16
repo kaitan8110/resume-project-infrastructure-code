@@ -212,6 +212,10 @@ resource "aws_instance" "jenkins_vm" {
 
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
+  root_block_device {
+    volume_size = 10   # Set the root volume size to 16 GiB
+    volume_type = "gp2"
+  }
 }
 
 # Output the public IP of the Bastion Host

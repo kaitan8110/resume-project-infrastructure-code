@@ -5,6 +5,9 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3.9
   tasks:
+    - name: Install amazon.aws collection if not installed
+      ansible.builtin.command: ansible-galaxy collection install amazon.aws
+      changed_when: false
     - name: get ec2
       amazon.aws.ec2_instance_info:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
