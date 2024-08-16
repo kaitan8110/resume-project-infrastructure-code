@@ -6,9 +6,6 @@
     ansible_python_interpreter: /usr/bin/python3
     ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
   tasks:
-    - name: Set collection path environment variable
-      ansible.builtin.set_env:
-        ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
     - name: Install amazon.aws collection if not installed
       ansible.builtin.command: ansible-galaxy collection install amazon.aws
       changed_when: false
@@ -20,6 +17,8 @@
         filters:
           tag:Name: kube-control-plane
       register: ec2_facts
+      environment:
+        ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
     - debug:
         var: ec2_facts.instances[0].private_ip_address
     - name: add ec2 ip to inv file
