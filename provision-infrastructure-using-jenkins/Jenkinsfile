@@ -10,6 +10,7 @@ pipeline {
         STATE_BUCKET = "terraform-state-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_BUCKET_NAME = "ansible-bucket-unique123456"  // Ensure this name is unique
         ANSIBLE_SSH_PRIVATE_KEY = credentials('ansible-ssh-key')
+        ANSIBLE_CONFIG = "${WORKSPACE}/provision-infrastructure-using-jenkins/ansible/ansible_playbooks/ansible.cfg"
     }
     parameters {
         string(name: 'STAGE_TO_RUN', defaultValue: '', description: 'Comma-separated list of stages to run')
