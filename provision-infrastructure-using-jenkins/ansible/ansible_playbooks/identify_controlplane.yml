@@ -1,68 +1,59 @@
 - hosts: localhost
   gather_facts: yes
   become: true
-  become_user: ubuntu
   connection: local
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    # ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
+    ANSIBLE_COLLECTIONS_PATHS: "/var/lib/jenkins/.ansible/collections"
   tasks:
-    # - name: Install amazon.aws collection if not installed
-    #   ansible.builtin.command: ansible-galaxy collection install amazon.aws
-    #   changed_when: false
-    - name: Print environment variables
-      command: env
-      register: env_vars
+    - name: Install amazon.aws collection if not installed
+      ansible.builtin.command: ansible-galaxy collection install amazon.aws --force --collections-path /var/lib/jenkins/.ansible/collections
+      changed_when: false
+
+    - name: get ec2
+      amazon.aws.ec2_instance_info:
+        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        region: "ap-southeast-1"
+        filters:
+          tag:Name: kube-control-plane
+      register: ec2_facts
 
     - debug:
-        var: env_vars.stdout_lines
+        var: ec2_facts.instances[0].private_ip_address
 
-    - name: Print the current user
-      command: whoami
-      register: whoami_output
+    - name: add ec2 ip to inv file
+      lineinfile:
+        path: ./inv
+        line: "{{ item.private_ip_address }}"
+      loop: "{{ ec2_facts.instances }}"
 
-    - debug:
-        var: whoami_output.stdout
+    - name: add vars section
+      lineinfile:
+        path: ./inv
+        line: "[kubectrl:vars]"
 
-    # - name: get ec2
-    #   amazon.aws.ec2_instance_info:
-    #     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-    #     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-    #     region: "ap-southeast-1"
-    #     filters:
-    #       tag:Name: kube-control-plane
-    #   register: ec2_facts
-    #   environment:
-    #     ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
-    # - debug:
-    #     var: ec2_facts.instances[0].private_ip_address
-    # - name: add ec2 ip to inv file
-    #   lineinfile:
-    #     path: ./inv
-    #     line: "{{ item.private_ip_address }}"
-    #   loop: "{{ ec2_facts.instances }}"
-    # - name: add vars section
-    #   lineinfile:
-    #     path: ./inv
-    #     line: "[kubectrl:vars]"
-    # - name: add ansible user line
-    #   lineinfile:
-    #     path: ./inv
-    #     line: "ansible_user=ubuntu"
-    # - name: add ansible key line
-    #   lineinfile:
-    #     path: ./inv
-    #     line: "ansible_ssh_private_key_file={{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
-    # - name: add ssh args line
-    #   lineinfile:
-    #     path: ./inv
-    #     line: "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-    # - name: update inv file
-    #   amazon.aws.aws_s3:
-    #     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-    #     aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-    #     ec2_region: "ap-southeast-1"
-    #     bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
-    #     mode: put
-    #     object: /inv
-    #     src: ./inv
+    - name: add ansible user line
+      lineinfile:
+        path: ./inv
+        line: "ansible_user=ubuntu"
+
+    - name: add ansible key line
+      lineinfile:
+        path: ./inv
+        line: "ansible_ssh_private_key_file={{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
+
+    - name: add ssh args line
+      lineinfile:
+        path: ./inv
+        line: "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+
+    - name: update inv file
+      amazon.aws.aws_s3:
+        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        ec2_region: "ap-southeast-1"
+        bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
+        mode: put
+        object: /inv
+        src: ./inv
