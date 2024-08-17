@@ -4,7 +4,6 @@
   connection: local
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    ANSIBLE_COLLECTIONS_PATHS: "/var/lib/jenkins/.ansible/collections"
   tasks:
     - name: Install amazon.aws collection if not installed
       ansible.builtin.command: ansible-galaxy collection install amazon.aws --force --collections-path /var/lib/jenkins/.ansible/collections
