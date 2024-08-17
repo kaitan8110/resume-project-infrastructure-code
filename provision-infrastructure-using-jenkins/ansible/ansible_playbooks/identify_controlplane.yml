@@ -9,6 +9,21 @@
     - name: Install amazon.aws collection if not installed
       ansible.builtin.command: ansible-galaxy collection install amazon.aws
       changed_when: false
+
+    - name: Print environment variables
+      command: env
+      register: env_vars
+
+    - debug:
+        var: env_vars.stdout_lines
+
+    - name: Print the current user
+      command: whoami
+      register: whoami_output
+
+    - debug:
+        var: whoami_output.stdout
+
     - name: get ec2
       amazon.aws.ec2_instance_info:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
