@@ -4,12 +4,11 @@
   connection: local
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
+    # ANSIBLE_COLLECTIONS_PATHS: "/home/ubuntu/.ansible/collections:/usr/share/ansible/collections"
   tasks:
-    - name: Install amazon.aws collection if not installed
-      ansible.builtin.command: ansible-galaxy collection install amazon.aws
-      changed_when: false
-
+    # - name: Install amazon.aws collection if not installed
+    #   ansible.builtin.command: ansible-galaxy collection install amazon.aws
+    #   changed_when: false
     - name: Print environment variables
       command: env
       register: env_vars
