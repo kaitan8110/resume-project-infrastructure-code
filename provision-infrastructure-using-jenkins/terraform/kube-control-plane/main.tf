@@ -27,11 +27,11 @@ data "aws_subnet" "controlplane_subnet_id" {
 #   most_recent = true
 }
 
-data "aws_security_group" "kube_sg_id" {
+data "aws_security_group" "controlplane_sg_id" {
   
   filter {
     name   = "tag:Name"
-    values = ["kube-sg"]
+    values = ["controlplane_sg"]
   }
 
 #   most_recent = true
@@ -49,7 +49,7 @@ data "aws_key_pair" "key_pair_id" {
 
 resource "aws_network_interface" "controlplane_eni" {
   subnet_id       = data.aws_subnet.controlplane_subnet_id.id
-  security_groups = [data.aws_security_group.kube_sg_id.id]
+  security_groups = [data.aws_security_group.controlplane_sg_id.id]
 
 }
 

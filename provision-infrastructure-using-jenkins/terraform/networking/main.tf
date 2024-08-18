@@ -75,48 +75,91 @@ resource "aws_route_table_association" "worker_rta" {
   route_table_id = aws_route_table.worker_rt.id
 }
 
-resource "aws_security_group" "kube_sg" {
-  name        = "kube_sg"
-  description = "sg for kube"
+resource "aws_security_group" "controlplane_sg" {
+  name        = "controlplane_sg"
+  description = "Security group for Kubernetes control plane"
   vpc_id      = var.vpc_id
 
+  // Control Plane Ingress Rules
   ingress {
-    protocol   = "tcp"
+    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
     cidr_blocks = ["0.0.0.0/0"]
-    from_port  = 22
-    to_port    = 22
   }
 
   ingress {
-    protocol   = "tcp"
+    protocol    = "tcp"
+    from_port   = 6443
+    to_port     = 6443
     cidr_blocks = ["0.0.0.0/0"]
-    from_port  = 80
-    to_port    = 80
   }
 
   ingress {
-    protocol   = "tcp"
+    protocol    = "tcp"
+    from_port   = 2379
+    to_port     = 2380
     cidr_blocks = ["0.0.0.0/0"]
-    from_port  = 443
-    to_port    = 443
   }
 
   ingress {
-    protocol   = "tcp"
+    protocol    = "tcp"
+    from_port   = 10250
+    to_port     = 10259
     cidr_blocks = ["0.0.0.0/0"]
-    from_port  = 6443
-    to_port    = 6443
   }
 
+  // Egress Rules
   egress {
+    protocol         = "-1"
     from_port        = 0
     to_port          = 0
-    protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {
-    Name = "kube-sg"
+    Name = "controlplane-sg"
+  }
+}
+
+resource "aws_security_group" "worker_sg" {
+  name        = "worker_sg"
+  description = "Security group for Kubernetes worker nodes"
+  vpc_id      = var.vpc_id
+
+  // Worker Node Ingress Rules
+  ingress {
+    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 10250
+    to_port     = 10250
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 30000
+    to_port     = 32767
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  // Egress Rules
+  egress {
+    protocol         = "-1"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "worker-sg"
   }
 }
