@@ -31,7 +31,7 @@ data "aws_security_group" "controlplane_sg_id" {
   
   filter {
     name   = "tag:Name"
-    values = ["controlplane_sg"]
+    values = ["controlplane-sg"]
   }
 
 #   most_recent = true
