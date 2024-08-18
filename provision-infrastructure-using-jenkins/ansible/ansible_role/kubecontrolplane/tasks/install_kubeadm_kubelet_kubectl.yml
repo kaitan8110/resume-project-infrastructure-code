@@ -11,11 +11,11 @@
       - gpg
     state: present
 
-- name: Add Kubernetes APT repository GPG key
-  ansible.builtin.command: >
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-  args:
-    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+- name: Download Kubernetes APT repository GPG key
+  get_url:
+    url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
+    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    mode: '0644'
 
 - name: Add Kubernetes APT repository
   ansible.builtin.command: >
