@@ -36,12 +36,8 @@
     state: present
 
 - name: Hold Kubernetes packages to prevent upgrades
-  apt:
-    name:
-      - kubelet
-      - kubeadm
-      - kubectl
-    state: hold
+  command: >
+    sudo apt-mark hold kubelet kubeadm kubectl
 
 - name: Set cgroup driver for kubelet
   lineinfile:
