@@ -1,5 +1,34 @@
 ---
 # tasks file for kubecontrolplane
+- name: Update apt package index
+  apt:
+    update_cache: yes
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+
+- name: Enable Docker service on boot
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Ensure Docker is running
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Check Docker status
+  command: systemctl status docker
+  register: docker_status
+  ignore_errors: yes
+
+- name: Debug Docker status
+  debug:
+    var: docker_status.stdout
 
 - name: Disable swap temporarily
   ansible.builtin.command: swapoff -a

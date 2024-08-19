@@ -13,13 +13,13 @@
 
 - name: Download Kubernetes APT repository GPG key
   get_url:
-    url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
+    url: https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
     dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     mode: '0644'
 
 - name: Add Kubernetes APT repository
   ansible.builtin.command: >
-    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
   args:
     creates: /etc/apt/sources.list.d/kubernetes.list
 
@@ -43,7 +43,40 @@
       - kubectl
     state: hold
 
+- name: Set cgroup driver for kubelet
+  lineinfile:
+    path: /etc/default/kubelet
+    line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"'
 
+- name: Reload systemd and restart kubelet
+  shell: |
+    sudo systemctl daemon-reload && sudo systemctl restart kubelet
+
+- name: Add Docker daemon configuration
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+          "exec-opts": ["native.cgroupdriver=systemd"],
+          "log-driver": "json-file",
+          "log-opts": {
+              "max-size": "100m"
+          },
+          "storage-driver": "overlay2"
+      }
+
+- name: Reload systemd and restart Docker
+  shell: |
+    sudo systemctl daemon-reload && sudo systemctl restart docker
+
+- name: Set fail-swap-on for kubelet
+  lineinfile:
+    path: /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+    line: 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"'
+
+- name: Reload systemd and restart kubelet after config change
+  shell: |
+    sudo systemctl daemon-reload && sudo systemctl restart kubelet
 
 
 
