@@ -2,29 +2,38 @@
 - hosts: kubectrl
   become: yes
   tasks:
-    - name: Get kubeadm token join command
-      command: kubeadm token create --print-join-command
-      register: tokenout
+    - name: Get kubeadm token join command and save it to a file on the control plane
+      command: kubeadm token create --print-join-command > /tmp/token_cmd.sh
 
-    - name: Save the token command to a local file
-      delegate_to: localhost
-      run_once: true
-      copy:
-        content: "{{ tokenout.stdout }}"
-        dest: "{{ playbook_dir }}/token_cmd.sh"
 
-- hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Upload the join command to S3
-      aws_s3:
-        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        region: "{{ lookup('env', 'AWS_DEFAULT_REGION') }}"
-        bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
-        mode: put
-        object: "token_cmd.sh"
-        src: "{{ playbook_dir }}/token_cmd.sh"
+
+
+# - hosts: kubectrl
+#   become: yes
+#   tasks:
+#     - name: Get kubeadm token join command
+#       command: kubeadm token create --print-join-command
+#       register: tokenout
+
+#     - name: Save the token command to a local file
+#       delegate_to: localhost
+#       run_once: true
+#       copy:
+#         content: "{{ tokenout.stdout }}"
+#         dest: "{{ playbook_dir }}/token_cmd.sh"
+
+# - hosts: localhost
+#   gather_facts: no
+#   tasks:
+#     - name: Upload the join command to S3
+#       aws_s3:
+#         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+#         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+#         region: "{{ lookup('env', 'AWS_DEFAULT_REGION') }}"
+#         bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
+#         mode: put
+#         object: "token_cmd.sh"
+#         src: "{{ playbook_dir }}/token_cmd.sh"
 
 # ---
 # - hosts: kubectrl
