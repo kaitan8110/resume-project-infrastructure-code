@@ -21,6 +21,7 @@
     - "127.0.0.1 localhost"
     - "127.0.0.1 control-plane"
     - "10.0.3.69 control-plane"
+    - "10.0.4.222 worker01"
   when: ansible_hostname == "control-plane"
 
 - name: Update apt package index

@@ -230,6 +230,32 @@ pipeline {
                     }
                 }
 
+                stage('Prepare inv file') {
+                    when {
+                        environment name: 'SKIP', value: 'N'
+                    }
+                    steps {
+                        script {
+                            sh '''
+                            ansible --version
+                            cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
+                            
+                            # Display the current executing user
+                            echo "Current executing user: $(whoami)"
+                            
+                            # Print environment variables
+                            env
+                            
+                            # Run Ansible playbook
+                            ansible-playbook -vvv identify_controlplane.yml -i inv
+                            
+                            # Display the contents of the inventory file
+                            cat inv
+                            '''
+                        }
+                    }
+                }
+
                 stage("generate join token") {
                     when {
                         environment name: 'SKIP', value: 'N'
