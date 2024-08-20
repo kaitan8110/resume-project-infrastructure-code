@@ -2,43 +2,52 @@
   gather_facts: yes
   become: true
   connection: local
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: get ec2
-      ec2_instance_facts:
+      amazon.aws.ec2_instance_info:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        ec2_region: "us-east-1"
+        region: "ap-southeast-1"
         filters:
-          tag:instancemode: node
+          tag:Name: worker-node
       register: ec2_facts
+
     - debug:
-        var: ec2_facts.instances[0].public_dns_name
+        var: ec2_facts.instances[0].private_ip_address
+
     - name: add ec2 ip to inv file
       lineinfile:
         path: ./nodeinv
-        line: "{{ item.public_dns_name }}"
+        line: "{{ item.private_ip_address }}"
       loop: "{{ ec2_facts.instances }}"
+
     - name: add vars section
       lineinfile:
         path: ./nodeinv
         line: "[kubenodes:vars]"
+
     - name: add ansible user line
       lineinfile:
         path: ./nodeinv
         line: "ansible_user=ubuntu"
+
     - name: add ansible key line
       lineinfile:
         path: ./nodeinv
-        line: "ansible_ssh_private_key_file=/var/lib/jenkins/id_rsa"
+        line: "ansible_ssh_private_key_file={{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
+
     - name: add ssh args line
       lineinfile:
         path: ./nodeinv
         line: "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+
     - name: update inv file
       aws_s3:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
         aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-        ec2_region: "us-east-1"
+        ec2_region: "ap-southeast-1"
         bucket: "{{ lookup('env', 'ANSIBLE_BUCKET_NAME') }}"
         mode: put
         object: /nodeinv

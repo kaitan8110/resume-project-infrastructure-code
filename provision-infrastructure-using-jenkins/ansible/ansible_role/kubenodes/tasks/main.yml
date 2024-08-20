@@ -1,17 +1,155 @@
 ---
-# tasks file for kubecontrolplane
+# tasks file for worker nodes
+- name: Display the current user running the Ansible script
+  command: whoami
+  register: current_user
 
+- name: Show the current user
+  debug:
+    msg: "The Ansible script is being run by user: {{ current_user.stdout }}"
 
-- name: Run the equivalent of "apt-get update" as a separate step
+- name: Set the hostname for the worker node
+  hostname:
+    name: worker01
+
+- name: Update /etc/hosts with IP addresses and hostnames
+  lineinfile:
+    path: /etc/hosts
+    state: present
+    line: "{{ item }}"
+  loop:
+    - "127.0.0.1 localhost"
+    - "10.0.3.69 control-plane"
+  when: ansible_hostname == "worker01"
+
+- name: Update apt package index
   apt:
     update_cache: yes
-- name: Install utils
+
+- name: Install Docker
   apt:
-    name: "{{ item }}"
+    name: docker.io
     state: present
-  loop:
-    - apt-transport-https
-    - software-properties-common
-    - curl
-- include_tasks: install_docker.yml
-- include_tasks: install_kubernetes.yml
+
+- name: Enable Docker service on boot
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Ensure Docker is running
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Check Docker status
+  command: systemctl status docker
+  register: docker_status
+  ignore_errors: yes
+
+- name: Debug Docker status
+  debug:
+    var: docker_status.stdout
+
+- name: Disable swap temporarily
+  ansible.builtin.command: swapoff -a
+
+- name: Ensure swap is disabled permanently
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^\s*[^#]\S+\s+\S+\s+swap\s'
+    replace: '# \g<0>'
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Load containerd kernel modules configuration
+  copy:
+    content: |
+      overlay
+      br_netfilter
+    dest: /etc/modules-load.d/k8s.conf
+    mode: '0644'
+
+- name: Load overlay module
+  command: modprobe overlay
+
+- name: Load br_netfilter module
+  command: modprobe br_netfilter
+
+- name: Create sysctl configuration for Kubernetes
+  copy:
+    content: |
+      net.bridge.bridge-nf-call-iptables  = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward                 = 1
+    dest: /etc/sysctl.d/k8s.conf
+    mode: '0644'
+
+- name: Apply sysctl parameters
+  command: sysctl --system
+
+- name: Verify that br_netfilter module is loaded
+  shell: lsmod | grep br_netfilter
+  register: br_netfilter_loaded
+  failed_when: br_netfilter_loaded.stdout == ""
+
+- name: Verify that overlay module is loaded
+  shell: lsmod | grep overlay
+  register: overlay_loaded
+  failed_when: overlay_loaded.stdout == ""
+
+- name: Verify sysctl parameters
+  command: sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
+  register: sysctl_check
+  failed_when: "'= 1' not in sysctl_check.stdout"
+
+- name: Update package list
+  apt:
+    update_cache: yes
+
+- name: Install containerd
+  apt:
+    name: containerd
+    state: present
+
+- name: Create containerd default config directory
+  file:
+    path: /etc/containerd
+    state: directory
+    mode: '0755'
+
+- name: Generate default containerd config
+  command: containerd config default
+  register: containerd_config
+  changed_when: false
+
+- name: Save containerd config to file
+  copy:
+    content: "{{ containerd_config.stdout }}"
+    dest: /etc/containerd/config.toml
+
+- name: Restart containerd
+  systemd:
+    name: containerd
+    state: restarted
+    enabled: yes
+
+- include_tasks: other.yml
+
+
+# - name: Run the equivalent of "apt-get update" as a separate step
+#   apt:
+#     update_cache: yes
+# - name: Install utils
+#   apt:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - apt-transport-https
+#     - software-properties-common
+#     - curl
+# - include_tasks: install_docker.yml
+# - include_tasks: install_kubernetes.yml

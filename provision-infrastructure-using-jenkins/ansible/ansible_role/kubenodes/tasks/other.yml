@@ -39,75 +39,71 @@
   command: >
     sudo apt-mark hold kubelet kubeadm kubectl
 
-- name: Set cgroup driver for kubelet
-  lineinfile:
-    path: /etc/default/kubelet
-    line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"'
+###
+# - name: Set cgroup driver for kubelet
+#   lineinfile:
+#     path: /etc/default/kubelet
+#     line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"'
 
-- name: Reload systemd and restart kubelet
-  shell: |
-    sudo systemctl daemon-reload && sudo systemctl restart kubelet
+# - name: Reload systemd and restart kubelet
+#   shell: |
+#     sudo systemctl daemon-reload && sudo systemctl restart kubelet
 
-- name: Add Docker daemon configuration
-  copy:
-    dest: /etc/docker/daemon.json
-    content: |
-      {
-          "exec-opts": ["native.cgroupdriver=systemd"],
-          "log-driver": "json-file",
-          "log-opts": {
-              "max-size": "100m"
-          },
-          "storage-driver": "overlay2"
-      }
+# - name: Add Docker daemon configuration
+#   copy:
+#     dest: /etc/docker/daemon.json
+#     content: |
+#       {
+#           "exec-opts": ["native.cgroupdriver=systemd"],
+#           "log-driver": "json-file",
+#           "log-opts": {
+#               "max-size": "100m"
+#           },
+#           "storage-driver": "overlay2"
+#       }
 
-- name: Reload systemd and restart Docker
-  shell: |
-    sudo systemctl daemon-reload && sudo systemctl restart docker
+# - name: Reload systemd and restart Docker
+#   shell: |
+#     sudo systemctl daemon-reload && sudo systemctl restart docker
 
-- name: Set fail-swap-on for kubelet
-  lineinfile:
-    path: /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
-    line: 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"'
+# - name: Set fail-swap-on for kubelet
+#   lineinfile:
+#     path: /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+#     line: 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"'
 
-- name: Reload systemd and restart kubelet after config change
-  shell: |
-    sudo systemctl daemon-reload && sudo systemctl restart kubelet
+# - name: Reload systemd and restart kubelet after config change
+#   shell: |
+#     sudo systemctl daemon-reload && sudo systemctl restart kubelet
+###
 
-- name: Initialize Kubernetes cluster
-  command: kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=master-node --upload-certs --ignore-preflight-errors=NumCPU,Mem
-  register: kubeadm_output
+### 
+# - name: Initialize Kubernetes cluster
+#   command: kubeadm init --control-plane-endpoint=master-node --upload-certs --ignore-preflight-errors=NumCPU,Mem
+#   register: kubeadm_output
 
-- name: Create .kube directory
-  file:
-    path: /root/.kube
-    state: directory
-    mode: '0755'
+# - name: Create .kube directory
+#   file:
+#     path: /root/.kube
+#     state: directory
+#     mode: '0755'
 
-- name: Copy kubeconfig to .kube directory
-  command: cp /etc/kubernetes/admin.conf /root/.kube/config
+# - name: Copy kubeconfig to .kube directory
+#   command: cp /etc/kubernetes/admin.conf /root/.kube/config
 
-- name: Change ownership of kubeconfig file
-  file:
-    path: /root/.kube/config
-    owner: root
-    group: root
-    mode: '0644'
+# - name: Change ownership of kubeconfig file
+#   file:
+#     path: /root/.kube/config
+#     owner: root
+#     group: root
+#     mode: '0644'
 
-- name: Install Flannel network plugin
-  command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-  environment:
-    KUBECONFIG: /root/.kube/config
+# - name: Install Flannel network plugin
+#   command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+#   environment:
+#     KUBECONFIG: /root/.kube/config
+###
 
-- name: Remove the control-plane taint from all nodes
-  shell: |
-    kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-  args:
-    warn: false
-  register: result
-  failed_when: "'no taint found' not in result.stderr"
-  changed_when: "'node-role.kubernetes.io/control-plane-' in result.stdout"
-  ignore_errors: yes
+
 
 # - name: Add Kubernetes repository
 #   yum_repository:

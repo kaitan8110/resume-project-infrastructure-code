@@ -2,4 +2,4 @@
 - hosts: kubenodes
   become: yes
   roles:
-    - role: '/var/lib/jenkins/workspace/TerraKubeDeploy_ec2kube/ansible_infra/ansible_role/kubenodes'
+    - role: 'kubenodes'

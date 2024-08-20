@@ -192,8 +192,8 @@ pipeline {
             }
         }
 
-        stage("Launch Worker Nodes") {
-            when {
+        stage("Launch Worker Nodes"){
+            when{
                 anyOf {
                     expression { params.STAGE_TO_RUN == '' }
                     expression { params.STAGE_TO_RUN.contains('Deploy Workernodes') }
@@ -203,89 +203,91 @@ pipeline {
                     environment name: 'SKIP', value: 'N'
                 }
             }
-            stages {
-                stage("deploy worker nodes") {
-                    when {
-                        environment name: 'SKIP', value: 'N'
+            stages{
+                stage("deploy worker nodes"){
+                    when{
+                        environment name:'SKIP',value:'N'
                     }
-                    stages {
-                        stage('Validate worker nodes Infra') {
-                            steps {
+                    stages{
+                        stage('Validate worker nodes Infra'){
+                            steps{
                                 sh '''
                                 cd provision-infrastructure-using-jenkins/terraform/worker-node
                                 terraform init
-                                terraform validate
-                                '''
+                                terraform validate'''
                             }
                         }
-                        stage('Deploy worker nodes Infra') {
-                            steps {
+                        stage('Deploy worker nodes Infra'){
+                            steps{
                                 sh '''
                                 cd provision-infrastructure-using-jenkins/terraform/worker-node
                                 terraform plan -out outfile
-                                terraform apply outfile
-                                '''
+                                terraform apply outfile'''
                             }
                         }
                     }
                 }
 
-                stage("generate join token") {
-                    when {
-                        environment name: 'SKIP', value: 'N'
+                stage("generate join token"){
+                    when{
+                        environment name:'SKIP',value:'N'
                     }
-                    steps {
+                    steps{
                         script {
-                            sh """
-                            cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
-                            aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
-                            ansible-playbook main_kubeadm_token.yml -i inv    
-                            ls -a        
-                            cat token_cmd.sh                       
-                            """
-                        }
+                                    sh """
+                                    cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
+                                    aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
+                                    ansible-playbook main_kubeadm_token.yml -i inv    
+                                    ls -a        
+                                    cat token_cmd.sh                       
+                                    """
+
+                                }
                     }
                 }
 
-                stage("update node inventory file") {
-                    when {
-                        environment name: 'SKIP', value: 'N'
+                stage("update node inventory file"){
+                    when{
+                        environment name:'SKIP',value:'N'
                     }
-                    steps {
+                    steps{
                         script {
-                            sh """
-                            cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
-                            aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
-                            ansible-playbook identify_nodes.yml -i inv   
-                            """
-                        }
+                                    sh """
+                                    cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
+                                    aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
+                                    ansible-playbook identify_nodes.yml -i inv   
+                                    """
+
+                                }
                     }
                 }
 
-                stage("bootstrap instance") {
-                    when {
-                        environment name: 'SKIP', value: 'N'
-                    }
-                    steps {
+
+
+
+                stage("bootstrap instance"){
+                    when{
+                                environment name:'SKIP',value:'N'
+                            }
+                    steps{
                         script {
-                            sh """
-                            cd provision-infrastructure-using-jenkins/ansible/ansible_role
-                            aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/nodeinv nodeinv
-                            ls -a
-                            pwd
-                            ansible-playbook kubenode.yml -i nodeinv       
-                            cd ..
-                            cd ansible_playbooks
-                            rm -f nodeinv
-                            aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/nodeinv nodeinv
-                            ansible-playbook bootstrap_node.yml -i nodeinv 
-                            ls -a
-                            """
-                        }
+                                    sh """
+                                    cd provision-infrastructure-using-jenkins/ansible/ansible_role
+                                    aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/nodeinv nodeinv
+                                    ls -a
+                                    pwd
+                                    ansible-playbook kubenode.yml -i nodeinv       
+                                    cd ..
+                                    cd ansible_playbooks
+                                    rm -f nodeinv
+                                    aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/nodeinv nodeinv
+                                    ansible-playbook bootstrap_node.yml -i nodeinv 
+                                    ls -a
+                                    """
+
+                                }
                     }
                 }
-            }
-        }
 
         stage("Empty S3 Buckets") {
             when {
@@ -318,11 +320,6 @@ pipeline {
             steps {
                 script {
                     // Initialize Terraform and destroy resources
-                    sh '''
-                    cd provision-infrastructure-using-jenkins/terraform/worker-node
-                    terraform init
-                    terraform destroy -auto-approve
-                    '''
                     sh '''
                     cd provision-infrastructure-using-jenkins/terraform/kube-control-plane
                     terraform init
@@ -368,6 +365,7 @@ pipeline {
                 }
             }
         }
+
     }
 
     post {

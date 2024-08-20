@@ -8,6 +8,21 @@
   debug:
     msg: "The Ansible script is being run by user: {{ current_user.stdout }}"
 
+- name: Set the hostname for the kubecontrolplane
+  hostname:
+    name: control-plane
+
+- name: Update /etc/hosts with IP addresses and hostnames
+  lineinfile:
+    path: /etc/hosts
+    state: present
+    line: "{{ item }}"
+  loop:
+    - "127.0.0.1 localhost"
+    - "127.0.0.1 control-plane"
+    - "10.0.3.69 control-plane"
+  when: ansible_hostname == "control-plane"
+
 - name: Update apt package index
   apt:
     update_cache: yes

@@ -171,6 +171,8 @@
   },
   "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/Jenkinsfile2",
+    "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/other.yml",
     "configuration/local-ssh-configuration.txt",
     "configuration/ssh-tunnel (to access jenkins in your local env).txt",
     "configuration/local_ssh_configuration.txt",
@@ -181,8 +183,6 @@
     "README.md",
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/tasks/install_docker_kubernetes.yml",
-    "provision-infrastructure-using-jenkins/terraform/s3-bucket/terraform.tfvars",
-    "provision-infrastructure-using-jenkins/terraform/networking/terraform.tfvars",
     "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
     "Untitled.canvas",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
