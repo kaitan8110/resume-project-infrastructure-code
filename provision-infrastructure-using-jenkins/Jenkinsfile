@@ -282,7 +282,7 @@ pipeline {
                     }
                 }
 
-                stage('Transfer kubeadm Token to Jenkins') {
+                stage('Upload the join command to S3') {
                     steps {
                         script {
                             sh """
