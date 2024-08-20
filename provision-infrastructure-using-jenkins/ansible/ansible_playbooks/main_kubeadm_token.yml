@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Get kubeadm token join command and save it to a file on the control plane
-      command: kubeadm token create --print-join-command > /tmp/token_cmd.sh
+      shell: kubeadm token create --print-join-command > /tmp/token_cmd.sh
 
 
 

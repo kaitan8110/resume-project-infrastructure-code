@@ -171,6 +171,7 @@
   },
   "active": "66aab5911511322f",
   "lastOpenFiles": [
+    "provision-infrastructure-using-jenkins/ansible/ansible_playbooks/upload_join_command_to_s3.yml",
     "provision-infrastructure-using-jenkins/Jenkinsfile2",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/other.yml",
     "configuration/local-ssh-configuration.txt",
@@ -182,7 +183,6 @@
     "configuration",
     "README.md",
     "provision-infrastructure-using-jenkins/Jenkinsfile1",
-    "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/tasks/install_docker_kubernetes.yml",
     "Excalidraw/Drawing 2024-07-22 11.20.54.excalidraw.md",
     "Untitled.canvas",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
