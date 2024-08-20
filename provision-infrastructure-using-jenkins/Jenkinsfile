@@ -267,8 +267,6 @@ pipeline {
                             cd provision-infrastructure-using-jenkins/ansible/ansible_playbooks
                             aws s3 cp s3://${env.ANSIBLE_BUCKET_NAME}/inv inv
                             ansible-playbook main_kubeadm_token.yml -i inv    
-                            ls -a        
-                            cat token_cmd.sh                       
                             """
                         }
                     }
