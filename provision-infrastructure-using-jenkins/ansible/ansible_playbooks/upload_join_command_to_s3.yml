@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   gather_facts: no
+  connection: local  # Use local connection instead of SSH
   tasks:
     - name: Upload the join command to S3
       aws_s3:
