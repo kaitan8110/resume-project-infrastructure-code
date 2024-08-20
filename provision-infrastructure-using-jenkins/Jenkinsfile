@@ -274,6 +274,16 @@ pipeline {
                     }
                 }
 
+                stage('Transfer kubeadm Token to Jenkins') {
+                    steps {
+                        script {
+                            sh '''
+                            scp -i ${env.ANSIBLE_SSH_PRIVATE_KEY} ubuntu@10.0.3.69:/tmp/token_cmd.sh provision-infrastructure-using-jenkins/ansible/ansible_playbooks/token_cmd.sh
+                            '''
+                        }
+                    }
+                }
+
                 stage("update node inventory file") {
                     when {
                         environment name: 'SKIP', value: 'N'
