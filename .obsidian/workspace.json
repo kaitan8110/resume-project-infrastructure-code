@@ -21,9 +21,11 @@
             "id": "edaaa92c9f516ca2",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "Excalidraw/Within VPC Infrastructure.md"
+                "file": "README.md",
+                "mode": "source",
+                "source": false
               }
             }
           },
@@ -37,7 +39,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -103,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Pasted Image 20240826163151_929.png",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -120,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Pasted Image 20240826163151_929.png",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -143,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Pasted Image 20240826163151_929.png"
+                "file": "README.md"
               }
             }
           }
@@ -165,22 +168,24 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "07b71576edae9292",
+  "active": "edaaa92c9f516ca2",
   "lastOpenFiles": [
-    "Pasted Image 20240826163251_298.png",
-    "Pasted Image 20240826163151_929.png",
+    "readme-images/Within-VPC-Infrastructure.jpg",
     "README.md",
-    "Within VPC Infrastructure.jpg",
-    "CI and CD Pipeline.jpg",
+    "Pasted Image 20240826163151_929.png",
     "Excalidraw/CI and CD Pipeline.md",
+    "CI and CD Pipeline.jpg",
+    "readme-images/CI and CD Pipeline.jpg",
+    "readme-images",
+    "readme_images",
     "Excalidraw/Within VPC Infrastructure.md",
+    "Pasted Image 20240826163251_298.png",
+    "Within VPC Infrastructure.jpg",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/install_kubeadm_kubelet_kubectl.yml",
     "Pasted Image 20240826165010_690.png",
     "Pasted Image 20240826164940_665.png",
     "Pasted Image 20240826164910_635.png",
     "Pasted Image 20240826163723_369.png",
-    "Pasted Image 20240826163453_324.png",
-    "Pasted Image 20240826163350_714.png",
     "Untitled.canvas",
     "Untitled.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_playbooks/upload_join_command_to_s3.yml",
@@ -190,8 +195,6 @@
     "configuration/ssh-tunnel (to access jenkins in your local env).txt",
     "configuration/local_ssh_configuration.txt",
     "configuration/port-forwarding(to access jenkins-vm).txt",
-    "configuration/port-forwarding(to access jenkins-vm))",
-    "configuration/local_ssh_configuration",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
