@@ -55,7 +55,7 @@ resource "aws_network_interface" "controlplane_eni" {
 
 resource "aws_instance" "controlplane" {
   ami           = "ami-0497a974f8d5dcef8" # us-east-1
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
 
   network_interface {
     network_interface_id = resource.aws_network_interface.controlplane_eni.id

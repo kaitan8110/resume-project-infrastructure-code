@@ -40,7 +40,7 @@
 - name: Set cgroup driver for kubelet
   lineinfile:
     path: /etc/default/kubelet
-    line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"'
+    line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=systemd"'
 
 - name: Reload systemd and restart kubelet
   shell: |
