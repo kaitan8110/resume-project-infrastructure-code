@@ -20,16 +20,6 @@
             }
           },
           {
-            "id": "47226a4c9fd494cd",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.6.7"
-              }
-            }
-          },
-          {
             "id": "edaaa92c9f516ca2",
             "type": "leaf",
             "state": {
@@ -49,8 +39,7 @@
               }
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -100,8 +89,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 287.5
   },
   "right": {
     "id": "9370c5a12195f90a",
@@ -117,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/CI and CD Pipeline.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -134,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/CI and CD Pipeline.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -157,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/CI and CD Pipeline.md"
+                "file": "README.md"
               }
             }
           }
@@ -179,8 +167,13 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "d0988902d73cd5d6",
+  "active": "07b71576edae9292",
   "lastOpenFiles": [
+    "Within VPC Infrastructure.jpg",
+    "CI and CD Pipeline.jpg",
+    "README.md",
+    "Excalidraw/CI and CD Pipeline.md",
+    "Excalidraw/Within VPC Infrastructure.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/install_kubeadm_kubelet_kubectl.yml",
     "Pasted Image 20240826165010_690.png",
     "Pasted Image 20240826164940_665.png",
@@ -190,8 +183,6 @@
     "Pasted Image 20240826163350_714.png",
     "Pasted Image 20240826163251_298.png",
     "Pasted Image 20240826163151_929.png",
-    "Excalidraw/Within VPC Infrastructure.md",
-    "Excalidraw/CI and CD Pipeline.md",
     "Untitled.canvas",
     "Untitled.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_playbooks/upload_join_command_to_s3.yml",
@@ -203,8 +194,6 @@
     "configuration/port-forwarding(to access jenkins-vm).txt",
     "configuration/port-forwarding(to access jenkins-vm))",
     "configuration/local_ssh_configuration",
-    "configuration",
-    "README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
