@@ -11,11 +11,9 @@
             "id": "07b71576edae9292",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "README.md",
-                "mode": "source",
-                "source": false
+                "file": "Pasted Image 20240826163151_929.png"
               }
             }
           },
@@ -89,7 +87,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 287.5
+    "width": 412.5
   },
   "right": {
     "id": "9370c5a12195f90a",
@@ -105,7 +103,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Pasted Image 20240826163151_929.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +120,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "Pasted Image 20240826163151_929.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +143,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "Pasted Image 20240826163151_929.png"
               }
             }
           }
@@ -169,9 +167,11 @@
   },
   "active": "07b71576edae9292",
   "lastOpenFiles": [
+    "Pasted Image 20240826163251_298.png",
+    "Pasted Image 20240826163151_929.png",
+    "README.md",
     "Within VPC Infrastructure.jpg",
     "CI and CD Pipeline.jpg",
-    "README.md",
     "Excalidraw/CI and CD Pipeline.md",
     "Excalidraw/Within VPC Infrastructure.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/install_kubeadm_kubelet_kubectl.yml",
@@ -181,8 +181,6 @@
     "Pasted Image 20240826163723_369.png",
     "Pasted Image 20240826163453_324.png",
     "Pasted Image 20240826163350_714.png",
-    "Pasted Image 20240826163251_298.png",
-    "Pasted Image 20240826163151_929.png",
     "Untitled.canvas",
     "Untitled.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_playbooks/upload_join_command_to_s3.yml",
