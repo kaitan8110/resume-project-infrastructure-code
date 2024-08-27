@@ -22,4 +22,5 @@ provision-infrastructure-using-jenkins/terraform/terraform.tfstate.backup
 *.jks
 *.keystore
 .obsidian/*
+.obsidian
 Pasted*.png
