@@ -202,7 +202,7 @@ resource "aws_eip_association" "bastion_eip_assoc" {
 # Create EC2 Instance
 resource "aws_instance" "jenkins_vm" {
   ami           = "ami-0497a974f8d5dcef8"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   subnet_id     = aws_subnet.jenkins_subnet.id
   key_name      = var.key_name
 

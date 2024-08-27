@@ -11,16 +11,6 @@
             "id": "07b71576edae9292",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "Pasted Image 20240826163151_929.png"
-              }
-            }
-          },
-          {
-            "id": "edaaa92c9f516ca2",
-            "type": "leaf",
-            "state": {
               "type": "markdown",
               "state": {
                 "file": "README.md",
@@ -30,17 +20,26 @@
             }
           },
           {
+            "id": "edaaa92c9f516ca2",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "readme-images/1-jenkins-pipeline.jpg"
+              }
+            }
+          },
+          {
             "id": "d0988902d73cd5d6",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "image",
               "state": {
-                "file": "Excalidraw/CI and CD Pipeline.md"
+                "file": "readme-images/2-jenkins-pipeline-configuration.jpg"
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -168,24 +167,26 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "edaaa92c9f516ca2",
+  "active": "07b71576edae9292",
   "lastOpenFiles": [
-    "readme-images/Within-VPC-Infrastructure.jpg",
+    "readme-images/13-set-to-destroy.jpg",
     "README.md",
-    "Pasted Image 20240826163151_929.png",
+    "12-argocd-app-details/jpg.md",
+    "12-argocd-app-details",
+    "readme-images/12-argocd-app-details.jpg",
+    "readme-images/11-argocd-main-page.jpg",
+    "readme-images/10-sample-app-landing-page.jpg",
+    "readme-images/9-get-pods-all.jpg",
+    "readme-images/CI-and-CD-Pipeline.jpg",
+    "readme-images/7-change-nodeport.jpg",
+    "readme-images/8-get-services.jpg",
+    "Pasted Image 20240826165010_690.png",
+    "readme-images/6-argocd-pods-running.jpg",
     "Excalidraw/CI and CD Pipeline.md",
-    "CI and CD Pipeline.jpg",
-    "readme-images/CI and CD Pipeline.jpg",
     "readme-images",
     "readme_images",
     "Excalidraw/Within VPC Infrastructure.md",
-    "Pasted Image 20240826163251_298.png",
-    "Within VPC Infrastructure.jpg",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/tasks/install_kubeadm_kubelet_kubectl.yml",
-    "Pasted Image 20240826165010_690.png",
-    "Pasted Image 20240826164940_665.png",
-    "Pasted Image 20240826164910_635.png",
-    "Pasted Image 20240826163723_369.png",
     "Untitled.canvas",
     "Untitled.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_playbooks/upload_join_command_to_s3.yml",
@@ -194,7 +195,6 @@
     "configuration/local-ssh-configuration.txt",
     "configuration/ssh-tunnel (to access jenkins in your local env).txt",
     "configuration/local_ssh_configuration.txt",
-    "configuration/port-forwarding(to access jenkins-vm).txt",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubecontrolplane/README.md",
     "provision-infrastructure-using-jenkins/ansible/ansible_role/kubenodes/README.md",
     "2. Provision infrastructure using Jenkins.md",
