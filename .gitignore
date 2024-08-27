@@ -23,4 +23,6 @@ provision-infrastructure-using-jenkins/terraform/terraform.tfstate.backup
 *.keystore
 .obsidian/*
 .obsidian
+Excalidraw
 Pasted*.png
+
